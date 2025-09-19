@@ -8,7 +8,7 @@ const StatusBarHeight = Constants.statusBarHeight;
 
 
 
-const { primary, secondary, tertiary, darkLight, brand, green } = Colors;
+const { primary, secondary, tertiary, darkLight, brand, green, red } = Colors;
 
 export const StyledContainer = styled.View`
     flex: 1;
@@ -138,6 +138,7 @@ export const ButtonText = styled.Text`
 export const MsBox = styled.Text`
     text-align: center;
     font-size: 13px;
+    color: ${red};
 `;
 
 export const Line = styled.View`
