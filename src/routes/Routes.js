@@ -1,11 +1,8 @@
-import { Colors } from '../components/styles';
+import {tertiary, primary} from '../assets/css/general/general.js';
 
 import Login from './../screens/Login';
 import Signup from './../screens/Signup';
 import Welcome from './../screens/Welcome';
-
-
-const { tertiary, primary } = Colors;
 
 
 const screenOptions = {

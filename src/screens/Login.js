@@ -1,9 +1,7 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-//Formik
 import { Formik } from 'formik';
-//icons
-import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons';
+import { Octicons, Ionicons } from '@expo/vector-icons';
 
 import {
   StyledContainer,
@@ -18,21 +16,18 @@ import {
   RightIcon,
   StyledButton,
   ButtonText,
-  Colors,
   MsBox,
   Line,
   ExtraView,
   ExtraText, 
   TextLink, 
   TextLinkContent
-} from '../components/styles.js';
+} from '../assets/css/auth/auth.js';
+import {darkLight, brand} from '../assets/css/general/general.js';
 import { View } from 'react-native';
 
-//Colors
-const { brand, darkLight, primary } = Colors;
-
 // keyboard
-import KeyboardAvoiding from '../components/KeyboardAvoiding.js';
+import KeyboardAvoiding from '../components/ui/KeyboardAvoiding.js';
 
 
 const Login = ({navigation}) => {

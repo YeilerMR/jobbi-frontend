@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { View, TouchableOpacity } from 'react-native';
 
 // keyboard
-import KeyboardAvoiding from '../components/KeyboardAvoiding.js';
+import KeyboardAvoiding from '../components/ui/KeyboardAvoiding.js';
 
 //Formik
 import { Formik } from 'formik';
@@ -31,10 +31,9 @@ import {
   ExtraText,
   TextLink,
   TextLinkContent,
-} from '../components/styles.js';
+} from '../assets/css/auth/auth.js';
 
-//Colors
-const { brand, darkLight, primary } = Colors;
+import {darkLight, brand} from '../assets/css/general/general.js';
 
 const Signup = ({navigation}) => {
   const [hidePassword, setHidePassword] = useState(true);
