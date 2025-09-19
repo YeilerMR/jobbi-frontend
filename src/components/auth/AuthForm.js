@@ -35,10 +35,11 @@ const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
             icon="mail"
             placeholder="johndoe@gmail.com"
             placeholderTextColor={darkLight}
-            onChangeText={handleChange("email")}
+            onChangeText={(text) => handleChange("email")(text.toLowerCase())}
             onBlur={handleBlur("email")}
             value={values.email}
             keyboardType="email-address"
+            autoCapitalize="none"
           />
 
           <Input
