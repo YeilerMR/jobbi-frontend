@@ -25,7 +25,7 @@ const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
           return;
         }
         const res = await loginPost(values);
-        if (res) navigation.navigate("Welcome");
+        if (res) navigation.navigate("PrivateArea", { screen: "Welcome" });
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (

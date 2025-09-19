@@ -10,7 +10,7 @@ const RegisterForm = ({ navigation, hidePassword, setHidePassword, showDatePicke
             initialValues={{ fullName: "", email: "", dateOfBirth: "", password: "", confirmPassword: "" }}
             onSubmit={(values) => {
                 console.log("Register form:", values);
-                navigation.navigate("Welcome");
+                navigation.navigate("PrivateArea", { screen: "Welcome" });
             }}
         >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
