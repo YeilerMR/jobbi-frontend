@@ -13,7 +13,6 @@ import AuthForm from "../components/auth/AuthForm";
 
 const Login = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
-
   return (
     <KeyboardAvoiding>
       <StyledContainer>

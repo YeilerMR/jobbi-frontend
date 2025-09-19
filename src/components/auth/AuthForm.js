@@ -12,14 +12,20 @@ import {
 } from "../../assets/css/auth/auth";
 import Input from "../ui/Input";
 import { darkLight } from "../../assets/css/general/general";
+import useLogin from "../../hooks/auth/login";
 
 const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
+  const { error, setError, loginPost } = useLogin();
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
-      onSubmit={(values) => {
-        console.log("Form: ", values);
-        navigation.navigate("Welcome");
+      onSubmit={async (values) => {
+        if(values.email.trim() === "" || values.password.trim() === ""){
+          setError("Please fill in all fields.");
+          return;
+        }
+        const res = await loginPost(values);
+        if (res) navigation.navigate("Welcome");
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -49,7 +55,7 @@ const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
             setHidePassword={setHidePassword}
           />
 
-          <MsBox>...</MsBox>
+          <MsBox>{error}</MsBox>
 
           <StyledButton onPress={handleSubmit}>
             <ButtonText>Login</ButtonText>
