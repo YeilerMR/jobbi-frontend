@@ -19,13 +19,13 @@ const Welcome = ({navigation}) => {
     <>
       <StatusBar style="light" />
       <InnerContainer>
-        <WelcomeImage resizeMode= "cover" source={require('../assets/welcome_image.png')}/>
+        <WelcomeImage resizeMode= "cover" source={require('../assets/img/welcome_image.webp')}/>
         <WelcomeContainer>
           <PageTitle welcome={true}>Welcome!!</PageTitle>
           <Subtitle welcome={true}>Jhon Doe</Subtitle>
           <Subtitle welcome={true}>johndoe@gmail.com</Subtitle>
           <StyledFormArea>
-            <Avatar resizeMode="cover" source={require('../assets/froggi.png')} />
+            <Avatar resizeMode="cover" source={require('../assets/img/froggi.webp')} />
             <Line />
             <StyledButton onPress={() => {
               console.log('Out of Session');
