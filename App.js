@@ -1,9 +1,4 @@
-import React from "react";
-import RootStack from "./routes/RootStack.js";
-
-import Login from './screens/Login';
-import Signup from './screens/Signup';
-import Welcome from './screens/Welcome';
+import RootStack from "./src/routes/RootStack.js";
 
 export default function App() {
   return (
