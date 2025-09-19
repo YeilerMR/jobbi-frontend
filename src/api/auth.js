@@ -1,10 +1,12 @@
 import axios from "./axios";
 
 export const registerRequest = async (user) => {
+  console.log(user);
   try {
-    const res = await axios.post(`/auth/signup`, user);
+    const res = await axios.post(`/auth/register`, user);
     return res.data;
   } catch (error) {
+    console.error(`se cayo en auth.js`)
     throw error;
   }
 }
