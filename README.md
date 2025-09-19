@@ -40,7 +40,7 @@ npm start
 - `App.js`: App entry point.
 - `screens/`: Main views (Login, Signup, Welcome).
 - `components/`: Reusable components and styles.
-- `assets/`: Images and resources.
+- `assets/img/`: Images and resources.
 
 ## Notes
 
@@ -50,3 +50,6 @@ npm start
 ## Contact
 
 For questions or support, contact the project developer.
+
+## Images
+To add new images upload them in ```.webp``` format. To do this, use this online tool: https://squoosh.app/

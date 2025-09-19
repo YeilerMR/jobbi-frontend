@@ -58,7 +58,7 @@ const Signup = ({navigation}) => {
       <StyledContainer>
         <StatusBar style="dark"></StatusBar>
         <InnerContainer>
-          {/* <PageLogo resizeMode="cover" source={require('../assets/froggi.png')}></PageLogo> */}
+          {/* <PageLogo resizeMode="cover" source={require('../assets/img/froggi.webp')}></PageLogo> */}
           <PageTitle>JOBBI</PageTitle>
           <Subtitle> Account Signup</Subtitle>
 
