@@ -74,7 +74,7 @@ const RegisterForm = ({ navigation, hidePassword, setHidePassword, showDatePicke
                         setHidePassword={setHidePassword}
                     />
 
-                    <MsBox>...</MsBox>
+                    <MsBox></MsBox>
 
                     <StyledButton onPress={handleSubmit}>
                         <ButtonText>Signup</ButtonText>
