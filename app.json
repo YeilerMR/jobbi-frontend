@@ -20,7 +20,8 @@
         "foregroundImage": "./src/assets/img/adaptive-icon.webp",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.jobbifrontend"
     },
     "web": {
       "favicon": "./src/assets/img/favicon.webp"
