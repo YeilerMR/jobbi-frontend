@@ -31,23 +31,17 @@ const RegisterForm = ({ navigation, hidePassword, setHidePassword, showDatePicke
           values.confirmPassword.trim() === ''
         ) {
           setError('Please fill any field in form!');
-          console.log('Empty fields');
           return;
         }
         if(values.password.trim()!== values.confirmPassword.trim()){
             setError('Please match both password!');
-            console.log('Empty fields');
             return;
         }
 
-        console.log(`Estoy en registerForm y este es el value:${values}`);
         const res = await registerPOST(values);
 
         if (res) {
-          navigation.navigate('Welcome');
-          console.log('Register form:', values);
-        } else{
-            console.error(`Se cayo en RegisterForm!`)
+          navigation.navigate("PrivateArea", { screen: "Welcome" });
         }
       }}
     >

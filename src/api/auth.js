@@ -7,7 +7,6 @@ export const registerRequest = async (user) => {
     const res = await axios.post(`/auth/register`, user);
     return res.data;
   } catch (error) {
-    console.error(`se cayo en auth.js`)
     throw error;
   }
 }
