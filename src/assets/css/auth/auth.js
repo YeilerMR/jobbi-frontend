@@ -1,23 +1,14 @@
-//import { Color } from "react-native/types_generated/Libraries/Animated/AnimatedExports";
 import styled from "styled-components";
-import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
 import Constants from 'expo-constants';
+import { Colors } from '../general/general.js';
 
 //Colores
 
 const StatusBarHeight = Constants.statusBarHeight;
 
-export const Colors = {
-    primary: "#ffffff",
-    secondary: "#E5E7EB",
-    tertiary: "#1F2937",
-    darkLight: "#9CA3AF",
-    brand: "#6D28D9",
-    green: "#10B981",
-    red: "#EF4444",
-};
 
-const {primary, secondary, tertiary, darkLight, brand, green, red} = Colors;
+
+const { primary, secondary, tertiary, darkLight, brand, green, red } = Colors;
 
 export const StyledContainer = styled.View`
     flex: 1;
@@ -30,6 +21,7 @@ export const InnerContainer = styled.View`
     flex:1;
     width: 100%;
     align-items: center;
+    height: 100%;
 `;
 
 export const WelcomeContainer = styled(InnerContainer)`
@@ -66,7 +58,7 @@ export const PageTitle = styled.Text`
     color: ${brand};
     padding: 10px;
 
-    ${(props)=> props.welcome && `
+    ${(props) => props.welcome && `
         font-size: 35px;
     `}
 `;
@@ -78,7 +70,7 @@ export const Subtitle = styled.Text`
     font-weight: bold;
     color: ${tertiary};
 
-    ${(props)=> props.welcome && `
+    ${(props) => props.welcome && `
         margin-bottom: 5px;
         font-weight: normal;
     `}
@@ -146,6 +138,7 @@ export const ButtonText = styled.Text`
 export const MsBox = styled.Text`
     text-align: center;
     font-size: 13px;
+    color: ${red};
 `;
 
 export const Line = styled.View`
