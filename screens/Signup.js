@@ -94,7 +94,7 @@ const Signup = ({navigation}) => {
                 <MyTextInput
                   label="Email Addres"
                   icon="mail"
-                  placeholder="tocagatos@gmail.com"
+                  placeholder="john@gmail.com"
                   placeholderTextColor={darkLight}
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}

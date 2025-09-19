@@ -30,7 +30,7 @@ npm install -g expo-cli
 1. Start the development server:
 
 ```bash
-expo start
+npm start
 ```
 
 2. Scan the QR code with the Expo Go app on your mobile device, or run on an Android/iOS emulator.
