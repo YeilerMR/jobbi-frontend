@@ -21,7 +21,7 @@ const useLogin = () => {
             setLoading(false);
         }
     }
-    return { data, loading, error, loginPost };
+    return { data, loading, error, setError, loginPost };
 };
 
 export default useLogin;
