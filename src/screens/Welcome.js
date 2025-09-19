@@ -11,7 +11,7 @@ import {
   WelcomeContainer,
   WelcomeImage,
   Avatar,
-} from '../components/styles.js';
+} from '../assets/css/auth/auth.js';
 
 const Welcome = ({navigation}) => {
 

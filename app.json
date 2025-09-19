@@ -4,11 +4,11 @@
     "slug": "jobbi-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/img/icon.webp",
+    "icon": "./src/assets/img/icon.webp",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/img/splash-icon.webp",
+      "image": "./src/assets/img/splash-icon.webp",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,13 +17,13 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/img/adaptive-icon.webp",
+        "foregroundImage": "./src/assets/img/adaptive-icon.webp",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true
     },
     "web": {
-      "favicon": "./assets/img/favicon.webp"
+      "favicon": "./src/assets/img/favicon.webp"
     }
   }
 }
