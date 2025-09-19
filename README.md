@@ -53,3 +53,20 @@ For questions or support, contact the project developer.
 
 ## Images
 To add new images upload them in ```.webp``` format. To do this, use this online tool: https://squoosh.app/
+
+## API_URL
+To obtain the IP of your computer you must follow the following steps:
+### Windows
+```bash
+ipconfig
+```
+### Mac/Linux
+```bash
+ifconfig
+```
+> [Note] Look for something like 192.168.x.x or 10.0.x.x.
+
+If you use an android emulator
+```bash
+http://10.0.2.2:3000
+```
