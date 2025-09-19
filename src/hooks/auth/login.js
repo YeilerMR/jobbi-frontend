@@ -12,7 +12,6 @@ const useLogin = () => {
 
         try {
             const res = await loginRequest(user);
-            console.log("Si pa:");
             setData(res);
             return true;
         } catch (error) {
