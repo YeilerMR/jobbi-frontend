@@ -25,7 +25,7 @@ const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
           return;
         }
         const res = await loginPost(values);
-        if (res) navigation.navigate("Welcome");
+        if (res) navigation.navigate("PrivateArea", { screen: "Welcome" });
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -35,10 +35,11 @@ const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
             icon="mail"
             placeholder="johndoe@gmail.com"
             placeholderTextColor={darkLight}
-            onChangeText={handleChange("email")}
+            onChangeText={(text) => handleChange("email")(text.toLowerCase())}
             onBlur={handleBlur("email")}
             value={values.email}
             keyboardType="email-address"
+            autoCapitalize="none"
           />
 
           <Input

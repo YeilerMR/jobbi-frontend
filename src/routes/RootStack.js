@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { publicRoutes, privateRoutes, screenOptions } from './Routes';
-
+import { publicRoutes, screenOptions } from './Routes';
+import PrivateDrawer from './PrivateDrawer';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,14 +12,11 @@ const RootStack = () => {
                 initialRouteName='Login'
             >
                 {
-                    privateRoutes.map((route) => (
-                        <Stack.Screen
-                            key={route.name}
-                            name={route.name}
-                            component={route.component}
-                            options={route.options}
-                        />
-                    ))
+                    <Stack.Screen
+                        name="PrivateArea"
+                        component={PrivateDrawer}
+                        options={{ headerShown: false }}
+                    />
 
                 }
 
