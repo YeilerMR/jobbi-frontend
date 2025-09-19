@@ -46,12 +46,12 @@ const privateRoutes = [
     }, {
         name: "Sucursales",
         component: BranchesScreen,
-        options: { title: "Sucursales" },
+        options: { title: "Branches" },
     },
     {
         name: "AddBusiness",
         component: AddBusinessScreen,
-        options: { title: "Agregar Negocio" },
+        options: { title: "Add Business" },
     },
 ];
 
