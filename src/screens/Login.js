@@ -43,7 +43,7 @@ const Login = ({navigation}) => {
       <StyledContainer>
         <StatusBar style="dark"></StatusBar>
         <InnerContainer>
-          <PageLogo resizeMode="cover" source={require('../assets/froggi.png')}></PageLogo>
+          <PageLogo resizeMode="cover" source={require('../assets/img/froggi.webp')}></PageLogo>
           <PageTitle>JOBBI</PageTitle>
           <Subtitle> Account Login</Subtitle>
 
@@ -86,12 +86,6 @@ const Login = ({navigation}) => {
                   </ButtonText>
                 </StyledButton>
                 <Line/>
-                <StyledButton google={true} onPress={handleSubmit}>
-                  <Fontisto name= "google" color={primary} size={25}/>
-                  <ButtonText google={true}>
-                      Sign in with Google
-                  </ButtonText>
-                </StyledButton>
 
                   <ExtraView>
                       <ExtraText>Don't have an account already? </ExtraText>
