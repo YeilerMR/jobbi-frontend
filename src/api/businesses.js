@@ -33,4 +33,16 @@ export const getBusinessById = async (id) => { }
 
 export const updateBusiness = async (id, business) => { }
 
-export const deleteBusiness = async (id) => { }
+export const deleteBusiness = async (id) => {
+    const token = await getAuthToken();
+    try {
+        const res = await axios.delete(`/business/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+}
