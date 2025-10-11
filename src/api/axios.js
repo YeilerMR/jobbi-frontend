@@ -1,7 +1,8 @@
 import axios from "axios";
-import { API_URL } from "../config.js";
+import config from '../config';
+
 const instance = axios.create({
-  baseURL: API_URL,
+  baseURL: config.API_URL,
   withCredentials: true,
 });
 export default instance;
