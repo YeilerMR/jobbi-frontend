@@ -45,10 +45,10 @@ jobs:
             const oldBase = '${{ github.event.pull_request.base.ref }}';
             const newBase = '${{ steps.determine.outputs.base }}';
             const headRef = '${{ github.event.pull_request.head.ref }}';
-
+            const body = `🔄 **Auto-corrected PR base branch**\n\nThis PR was automatically updated to target \`${newBase}\` (was: \`${oldBase}\`) based on your branch name:\n\`${headRef}\`\n\n> ℹ️ _This ensures we follow our branching flow: \`feature/* → dev → main\`._`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.pull_request.number,
-              body: commentBody
+              body
             });
