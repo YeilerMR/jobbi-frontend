@@ -111,6 +111,7 @@ const BusinessModal = ({
           </View>
 
           {/* Botones */}
+          {/*Comentario para probar el workflow*/}
           <View style={styles.footer}>
             <TouchableOpacity
               style={[styles.button, styles.cancelButton]}
