@@ -48,7 +48,7 @@ jobs:
 
             // Usamos comillas simples y escapamos las comillas internas si es necesario
             const commentBody = `
-📌 **Auto-corrected PR base branch**
+            **Auto-corrected PR base branch**
 
 This PR was automatically updated to target \`${newBase}\` (was: \`${oldBase}\`) based on your branch name: \`${headRef}\`
 
