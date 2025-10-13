@@ -47,14 +47,7 @@ jobs:
             const headRef = '${{ github.event.pull_request.head.ref }}';
 
             // Usamos comillas simples y escapamos las comillas internas si es necesario
-            const commentBody = `
-            **Auto-corrected PR base branch**
-
-This PR was automatically updated to target \`${newBase}\` (was: \`${oldBase}\`) based on your branch name: \`${headRef}\`
-
-> 💡 _This ensures we follow our branching flow: \`feature/* → dev → main\`._
-`;
-
+            
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
