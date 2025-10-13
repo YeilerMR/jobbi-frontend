@@ -30,7 +30,7 @@ const publicRoutes = [
     }
 ];
 
-const privateRoutes = [
+const clientRoutes = [
     {
         name: 'Home',
         component: Welcome,
@@ -38,21 +38,93 @@ const privateRoutes = [
             headerTintColor: primary
         }
     }, {
-        name: 'Business',
-        component: Business,
+        name: 'Profile',
+        component: Welcome,//cambiar 
         options: {
             headerTintColor: primary
         }
     }, {
-        name: "Sucursales",
-        component: BranchesScreen,
-        options: { title: "Sucursales" },
+        name: "Schedule an Appointment",
+        component: Welcome,//cambiar
+        options: { title: "Schedule an Appointment" },
     },
     {
-        name: "AddBusiness",
-        component: AddBusinessScreen,
-        options: { title: "Agregar Negocio" },
+        name: "Rewards",
+        component: Welcome,//cambiar
+        options: { title: "Rewards" },
     },
 ];
 
-export { publicRoutes, privateRoutes, screenOptions };
+const adminRoutes = [
+    {
+        name: 'Home',
+        component: Welcome, 
+        options:{headerTintColor: primary}
+    },
+    {
+        name: 'Profile',
+        component: Welcome,//cambiar
+        options:{headerTintColor: primary}
+    },
+    {
+        name: 'Business',
+        component: Business, 
+        options:{title: 'Business'}
+    },
+    {
+        name: 'Branches',
+        component: BranchesScreen, 
+        options:{title: 'Branches'}
+    },
+    {
+        name: 'Employees',
+        component: Welcome,//cambiar
+        options:{title: 'Employees'}
+    },
+    {
+        name: 'Services',
+        component: Welcome,//cambiar
+        options:{title: 'Services'}
+    },
+    {
+        name: 'Schedule',
+        component: Welcome,//cambiar
+        options:{title: 'Schedule'}
+    },
+    {
+        name: 'Subscriptions',
+        component: Welcome,//cambiar
+        options:{title: 'Subscriptions'}
+    },
+    {
+        name: 'Rewards',
+        component: Welcome,//cambiar
+        options:{title: 'Rewards'}
+    }
+];
+
+const employeeRoutes = [
+    {
+        name: 'Home', 
+        component: Welcome, 
+        options: {title:'Home'}
+    },
+    {
+        name: 'Profile', 
+        component: Welcome,//cambiar
+        options: {title:'Profile'}
+    },
+    {
+        name: 'My Schedule', 
+        component: Welcome,//cambiar
+        options: {title:'My Schedule'}
+    },
+    {
+        name: 'Rewards', 
+        component: Welcome,//cambiar
+        options: {title:'Rewards'}
+    }
+];
+
+
+export { publicRoutes, screenOptions, adminRoutes, clientRoutes, employeeRoutes };
