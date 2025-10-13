@@ -46,8 +46,6 @@ jobs:
             const newBase = '${{ steps.determine.outputs.base }}';
             const headRef = '${{ github.event.pull_request.head.ref }}';
 
-            // Usamos comillas simples y escapamos las comillas internas si es necesario
-            
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
