@@ -13,9 +13,12 @@ import {
 import Input from "../ui/Input";
 import { darkLight } from "../../assets/css/general/general";
 import useLogin from "../../hooks/auth/login";
+import { useUser } from "../../hooks/UserContext";
 
 const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
-  const { error, setError, loginPost } = useLogin();
+  
+  const { data, error, setError, loginPost } = useLogin();
+  const {setUserRole} = useUser();
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
@@ -24,8 +27,19 @@ const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
           setError("Please fill in all fields.");
           return;
         }
-        const res = await loginPost(values);
-        if (res) navigation.navigate("PrivateArea", { screen: "Welcome" });
+        const success = await loginPost(values);
+        if (success && data) {
+
+          const userRole = data?.role;
+          if (userRole !== undefined) {
+            setUserRole(userRole);
+            navigation.navigate('PrivateArea')
+          } else{
+            setError('User rol Not found')
+          }
+        }
+        // const res = await loginPost(values);
+        // if (res) navigation.navigate("PrivateArea", { screen: "Welcome" });
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
