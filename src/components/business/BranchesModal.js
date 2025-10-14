@@ -14,7 +14,8 @@ const BranchesModal = ({
   visible,
   onClose,
   onSave,
-  business = null, // null = crear, objeto = editar
+  business = null,
+  branch = null // null = crear, objeto = editars
 }) => {
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
@@ -23,13 +24,12 @@ const BranchesModal = ({
 
   // Si es modo edición, carga los datos del negocio
   useEffect(() => {
-    if (business) {
+    if (branch) {
       setName(business.name || '');
       setLocation(business.location || '');
       setPhone(business.phone || '');
       setEmail(business.email || '');
     } else {
-      // Modo crear: limpia los campos
       setName('');
       setLocation('');
       setPhone('');
@@ -47,6 +47,7 @@ const BranchesModal = ({
     }
 
     const businessData = {
+      id_business: business,
       name: name.trim(),
       location: location.trim(),
       phone: phone.trim(),

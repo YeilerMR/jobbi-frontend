@@ -96,7 +96,7 @@ const Business = () => {
     >
       <TouchableOpacity
         style={{ flexDirection: 'row', alignItems: 'flex-start' }}
-        onPress={() => navigation.navigate('Sucursales', { businessId: item.id_business })}
+        onPress={() => navigation.navigate('Branches', { businessId: item.id_business })}
       >
         <Ionicons name="storefront-outline" size={24} color={'#4e73df'}></Ionicons>
         <View style={{ marginLeft: 12, flex: 1 }}>
