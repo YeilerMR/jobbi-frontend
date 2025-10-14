@@ -50,4 +50,43 @@ export const createBranch = async (businessId,branchData) => {
     }
 };
 
-export const updateBranch = async (id, branchData) => { };
+export const updateBranch = async (id, branchData) => {
+    const token = await getAuthToken();
+    try {
+        const newBranchData = {
+            name: branchData.name || branchData.branch_name,
+            location: branchData.location || branchData.branch_location,
+            phone: branchData.phone || branchData.branch_phone,
+            email: branchData.email || branchData.branch_email
+        };
+        const res = await axios.put(`/branches/${id}`, newBranchData, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+        console.log("Actualizado");
+        return res.data;
+    } catch (error) {
+        console.log("Error actualizando", error);
+        throw error;
+    }
+};
+
+
+export const deleteBranch = async (id) => {
+    const token = await getAuthToken();
+    try {
+        const res = await axios.delete(`/branches/${id}`, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+};

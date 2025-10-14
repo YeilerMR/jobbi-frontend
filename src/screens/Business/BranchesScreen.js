@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { getMyBranches, getBranchesByBusiness, createBranch, updateBranch } from '../../api/branches';
+import { getMyBranches, getBranchesByBusiness, createBranch, updateBranch, deleteBranch } from '../../api/branches';
 import InfoRow from '../../components/ui/InfoRow';
 import CustomButton from '../../components/ui/ButtonCustome';
 import { Colors } from '../../assets/css/general/general';
@@ -50,8 +50,8 @@ const BranchesScreen = () => {
 
   const handleSaveBranch = async (BranchData) => {
     try {
-      if (BranchData.id_Branch) {
-        await updateBranch(BranchData.id_Branch, BranchData);
+      if (BranchData.id_Branch || BranchData.id_branch) {
+        await updateBranch(BranchData.id_Branch || BranchData.id_branch, BranchData);
         Alert.alert('Success', 'Branch Updated!');
       } else {
         await createBranch(businessId, BranchData);
@@ -63,21 +63,25 @@ const BranchesScreen = () => {
   };
 
   const handleToggleBranchStatus = async (Branch) => {
-    const idBranch = Branch.id_Branch;
-    const newStatus = Branch.state_Branch === 1 ? 0 : 1;
+    const idBranch = Branch.id_Branch || Branch.id_branch;
+    const newStatus = Branch.state_Branch || Branch.state_branch === 1 ? 0 : 1;
     const action = newStatus === 1 ? 'enable' : 'disable';
 
 
     Alert.alert(
       `Confirm ${action}`,
-      `Are you sure you want to ${action} "${Branch.name}"?`,
+      `Are you sure you want to ${action} "${Branch.name || Branch.branch_name}"?`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Yes', onPress: async () => {
             try {
-              if (Branch.state_Branch === 0) {
-                Branch.state_Branch = newStatus;
+              if (Branch.state_Branch || Branch.state_branch === 0) {
+                if(Branch.state_Branch) {
+                  Branch.state_Branch = newStatus;
+                }else{
+                  Branch.state_branch = newStatus;
+                }
                 await updateBranch(idBranch, Branch);
               } else {
                 await deleteBranch(idBranch);
@@ -148,7 +152,7 @@ const BranchesScreen = () => {
       </Text>
       <FlatList
         data={Branches}
-        keyExtractor={(item) => item.id_Branch}
+        keyExtractor={(item) => item.id_Branch || item.id_branch}
         renderItem={renderBranch}
         ListEmptyComponent={
           <Text style={{ textAlign: 'center', marginTop: 50, color: '#888' }}>{loading ? 'Loading...' : 'You have no registered Branches.'}</Text>
@@ -189,7 +193,7 @@ const BranchesScreen = () => {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onSave={handleSaveBranch}
-        Branch={selectedBranch}
+        branch={selectedBranch}
       />
     </View>
   );

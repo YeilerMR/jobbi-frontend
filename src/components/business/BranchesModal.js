@@ -14,7 +14,6 @@ const BranchesModal = ({
   visible,
   onClose,
   onSave,
-  business = null,
   branch = null // null = crear, objeto = editars
 }) => {
   const [name, setName] = useState('');
@@ -25,19 +24,19 @@ const BranchesModal = ({
   // Si es modo edición, carga los datos del negocio
   useEffect(() => {
     if (branch) {
-      setName(business.name || '');
-      setLocation(business.location || '');
-      setPhone(business.phone || '');
-      setEmail(business.email || '');
+      setName(branch.name || branch.branch_name || '');
+      setLocation(branch.location || branch.branch_location || '');
+      setPhone(branch.phone || branch.branch_phone || '');
+      setEmail(branch.email || branch.branch_email || '');
     } else {
       setName('');
       setLocation('');
       setPhone('');
       setEmail('');
     }
-  }, [business, visible]);
+  }, [branch, visible]);
 
-  const isEditing = !!business;
+  const isEditing = !!branch;
   const title = isEditing ? 'Edit Branch' : 'Add New Branch';
 
   const handleSave = () => {
@@ -46,8 +45,7 @@ const BranchesModal = ({
       return;
     }
 
-    const businessData = {
-      id_business: business,
+    const branchData = {
       name: name.trim(),
       location: location.trim(),
       phone: phone.trim(),
@@ -55,10 +53,10 @@ const BranchesModal = ({
     };
 
     if (isEditing) {
-      businessData.id_business = business.id_business;
+      branchData.id_Branch = branch.id_branch || branch.id_Branch;
     }
 
-    onSave(businessData);
+    onSave(branchData);
     onClose();
   };
 
