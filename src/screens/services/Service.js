@@ -3,18 +3,22 @@ import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet, Modal } from
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { createService, updateService, getAllServices, deleteService } from '../../api/services';
-
-import InfoRow from '../../components/ui/InfoRow';
+import { getAllServices, deleteService, updateService, createService } from '../../api/services';
+import ServiceCard from '../../components/services/ServiceCard';
+import ServiceInfoModal from '../../components/services/ServiceInfoModal';
+import ServiceForm from '../../components/services/ServiceForm';
 import { Colors } from '../../assets/css/general/general';
-import CustomButton from '../../components/ui/ButtonCustome';
+//
 
-const { primary, brand, btnEdit } = Colors;
+const { primary } = Colors;
 
 const Service = () => {
   const [services, setServices] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
+  const [formModalVisible, setFormModalVisible] = useState(false);
+  const [editingService, setEditingService] = useState(null);
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -23,206 +27,126 @@ const Service = () => {
 
   const fetchServices = async () => {
     try {
-      console.log('fetch: puto');
-      const res = await getAllServices(12); //agregar id del branch cuando termine daniel, hablar con el.
-      if (res && res?.data) {
-        setServices(res.data);
-      }
-    } catch (error) {}
+      const res = await getAllServices(12);
+      if (res?.data) setServices(res.data);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+    }
   };
 
-  //Handle save
-
-  //handleToggleStatus
-
-  const openEditModal = (service) => {
-    setSelectedService(service);
-    setModalVisible(true);
+  const handleToggleService = async (serviceId, isActive) => {
+    try {
+      await deleteService(serviceId); // ✅ Borrado lógico (cambia state_service a 0)
+      const newState = isActive ? 1 : 0;
+      setServices(prev =>
+        prev.map(s =>
+          s.id_service === serviceId ? { ...s, state_service: newState } : s
+        )
+      );
+      Alert.alert('Success', `Service ${isActive ? 'Enabled' : 'Disabled'}`);
+    } catch (error) {
+      Alert.alert('Error', 'No se pudo actualizar el estado.');
+    }
   };
+
   const openInfoModal = (service) => {
     setSelectedService(service);
     setModalVisible(true);
   };
 
   const renderService = ({ item }) => (
-    <View
-      style={{
-        backgroundColor: primary,
-        padding: 20,
-        borderRadius: 16,
-        marginBottom: 15,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowOffset: { width: 5, height: 5 },
-        shadowRadius: 6,
-        elevation: 3,
-      }}
-    >
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'flex-start' }} onPress={() => openInfoModal(item)}>
-        <Ionicons name="ribbon-outline" size={24} color={'#4e73df'} />
-        <View style={{ marginLeft: 12, flex: 1 }}>
-          <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 4 }}>{item.name}</Text>
-          <InfoRow iconName="cash-outline" text={`₡${item.price}`} />
-        </View>
-      </TouchableOpacity>
-    </View>
+    <ServiceCard
+      service={item}
+      onPress={() => openInfoModal(item)}
+    />
   );
+  //Handle Save Service
+  const handleSaveService = async (serviceData) => {
+    try {
+      if (editingService) {
+        //edition
+        await updateService(editingService.id_service, serviceData);//Revisar el endpoint
+        Alert.alert('Success', 'Service Updated!');
+      }else {
+        //create
+        await createService(serviceData);//Revisar endpoint
+        Alert.alert('Success', 'Service Created!');
+      }
+      setFormModalVisible(false);
+      fetchServices(); //reload page
+    } catch (error) {
+      Alert.alert('Error', 'Can not create the service.');
+    }
+  };
+
+
   return (
     <View style={{ flex: 1, backgroundColor: primary, padding: 20 }}>
       <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 16, color: '#333' }}>
         {services.length === 1 ? 'Service' : 'Services'} Registered:{' '}
-        <Text style={{ color: '#4e73df', fontWeight: 'bold' }}>{services.length}</Text>{' '}
+        <Text style={{ color: '#4e73df', fontWeight: 'bold' }}>{services.length}</Text>
       </Text>
+
       <FlatList
         data={services}
         keyExtractor={(item) => item.id_service.toString()}
         renderItem={renderService}
         ListEmptyComponent={
-          <Text style={{ textAlign: 'center', marginTop: 50, color: '#888' }}>You have no registered services.</Text>
+          <Text style={{ textAlign: 'center', marginTop: 50, color: '#888' }}>
+            You have no registered services.
+          </Text>
         }
+        contentContainerStyle={{ paddingBottom: 80 }}
       />
+
       <TouchableOpacity
-        onPress={() => {
-          Alert.alert('Hola Mundo!');
-          //   setSelectedBusiness(null);
-          //   setModalVisible(true);
-        }}
-        style={{
-          position: 'absolute',
-          right: 20,
-          bottom: 30,
-          backgroundColor: '#4e73df',
-          width: 60,
-          height: 60,
-          borderRadius: 30,
-          justifyContent: 'center',
-          alignItems: 'center',
-          shadowColor: '#000',
-          shadowOpacity: 0.3,
-          shadowOffset: { width: 0, height: 3 },
-          shadowRadius: 5,
-          elevation: 6,
-        }}
+        onPress={() => Alert.alert('Hola Mundo!')}
+        style={styles.fab}
       >
         <Ionicons name="add" size={28} color="#fff" />
       </TouchableOpacity>
-      {/*Falta el modal de edicion y registro*/}
 
-      {/* Modal de Informacion: */}
-      <Modal
-        animationType="slide"
-        transparent={true}
+      <ServiceInfoModal
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
+        onClose={() => setModalVisible(false)}
+        service={selectedService}
+        onToggleStatus={handleToggleService}
+        onEdit={() => Alert.alert('Editar', 'Formulario de edición pendiente')}
+      />
+      <Modal
+        animationType='slide'
+        transparent={false}
+        visible={formModalVisible}
+        onRequestClose={()=> setFormModalVisible(false)}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            {selectedService && (
-              <>
-                <Text style={styles.modalTitle}>{selectedService.name}</Text>
-                <View style={{flexDirection:'column', alignItems: 'flex-start'}}>
-
-                <InfoRow iconName="cash-outline" text={` Price: ₡${selectedService.price}`} />
-                <InfoRow iconName="document-text-outline" text={selectedService.description || 'No Description'} />
-                <InfoRow iconName="time-outline" text={selectedService.duration} />
-                </View>
-                {/* Buttons */}
-                <View style={styles.modalButtons}>
-                  <CustomButton
-                    text="Edit"
-                    onPress={() => {
-                      Alert.alert('Edit Service', 'Form to Edit Service');
-                    }}
-                    style={[styles.customButton, { backgroundColor: btnEdit }]}
-                  />
-                  <CustomButton
-                    text="Desactivar"
-                    onPress={() => {
-                      // Aquí irá la lógica para desactivar
-                      Alert.alert('Desactivar', '¿Estás seguro?', [
-                        { text: 'Cancelar', style: 'cancel' },
-                        { text: 'Sí', onPress: () => handleDeactivateService(selectedService.id_service) },
-                      ]);
-                    }}
-                    style={[styles.customButton, { backgroundColor: '#e74a3b' }]}
-                    textStyle={styles.buttonText}
-                  />
-                </View>
-              </>
-            )}
-            
-            <CustomButton
-              text="Cerrar"
-              onPress={() => setModalVisible(false)}
-              backgroundColor="#6c757d"
-              textColor="#fff"
-              paddingVertical={13} // ⬅️ Aumentado
-              paddingHorizontal={16}
-              fontSize={16} // ⬅️ Aumentado si quieres más visibilidad
-              style={{ width: '50%' }}
-            />
-          </View>
+        <View style={{flex: 1, padding: 20, backgroundColor: '#f8f9fa'}}>
+          <ServiceForm
+            service={editingService}
+            onSubmit={handleSaveService}
+            onCancel={()=> setFormModalVisible(false)}
+          />
         </View>
       </Modal>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
-  buttons: {
-    flexDirection: 'row',
+  fab: {
+    position: 'absolute',
+    right: 20,
+    bottom: 30,
+    backgroundColor: '#4e73df',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     justifyContent: 'center',
-    marginTop: 32,
-  },
-  customButton: {
-    flex: 1,
-    paddingVertical: 13,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginHorizontal: 2,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 16,
-  },
-  statusBadge: {
-    alignSelf: 'flex-end',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginBottom: 2,
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    width: '85%',
-    backgroundColor: 'white',
-    borderRadius: 16,
-    padding: 20,
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#333',
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    marginTop: 16,
-    marginBottom: 12,
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 5,
+    elevation: 6,
   },
 });
 
