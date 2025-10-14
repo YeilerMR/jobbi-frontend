@@ -5,6 +5,7 @@ import AddBusinessScreen from "../screens/Business/AddBusinessScreen";
 import Login from './../screens/Login';
 import Signup from './../screens/Signup';
 import Welcome from './../screens/Welcome';
+import Service from '../screens/services/Service.js';
 
 
 const screenOptions = {
@@ -83,7 +84,7 @@ const adminRoutes = [
     },
     {
         name: 'Services',
-        component: Welcome,//cambiar
+        component: Service,//cambiar
         options:{title: 'Services'}
     },
     {

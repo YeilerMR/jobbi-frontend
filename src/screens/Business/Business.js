@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Alert, Button, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { getMyBusinesses, updateBusiness, createBusiness, deleteBusiness } from '../../api/businesses';
@@ -108,9 +108,9 @@ const Business = () => {
             </Text>
           </View>
           {/* Business name */}
-          <View style={{flexDirection: 'row', alignItems: 'center', marginVertical: 4, marginBottom: 12}}>
+          {/* <View style={{flexDirection: 'row', alignItems: 'center', marginVertical: 4, marginBottom: 12}}>
       
-          </View>
+          </View> */}
           <InfoRow iconName="location-outline" text={item.location} />
           <InfoRow iconName="call-outline" text={item.phone} />
           <InfoRow iconName="mail-outline" text={item.email} />

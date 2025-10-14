@@ -1,0 +1,63 @@
+import { getAuthToken } from "../utils/Token";
+import axios from "./axios";
+
+export const createService = async (service) =>{
+    const token = await getAuthToken();
+    try {
+        const res = await axios.post('/service',service,{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getAllServices = async (idBranch)=>{
+    //console.log('idBranch:', idBranch)
+    const token = await getAuthToken();
+    console.log(token);
+    
+    try {
+        const res = await axios.get(`/Services/${idBranch}`,{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        //console.log('Datos de Servicios:', res.data);
+        
+        return res.data;
+    } catch (error) {
+        throw error
+    }
+};
+
+export const updateService = async (id, service) => {
+    const token = await getAuthToken();
+    try {
+        const res = await axios.put(`/service/${id}`, service, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const deleteService = async (id) => {
+    const token = await getAuthToken();
+    try {
+        const res= await axios.delete(`/service/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+}

@@ -106,6 +106,8 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    
+
   },
   column: {
     flexDirection: 'column',
