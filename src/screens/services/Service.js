@@ -3,37 +3,71 @@ import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet, Modal } from
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { getAllServices, deleteService, updateService, createService, getAllSpecialties } from '../../api/services';
+import { getServices, getAllServices, deleteService, updateService, createService, getAllSpecialties } from '../../api/services';
 import ServiceCard from '../../components/services/ServiceCard';
 import ServiceInfoModal from '../../components/services/ServiceInfoModal';
 import ServiceForm from '../../components/services/ServiceForm';
 import { Colors } from '../../assets/css/general/general';
+
+import { useRoute } from '@react-navigation/native';
 //
 
 const { primary } = Colors;
 
 const Service = () => {
+
+  const route = useRoute();
+  const { branchId } = route?.params || 0;
+
+
   const [services, setServices] = useState([]);
   const [specialties, setSpecialties] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [formModalVisible, setFormModalVisible] = useState(false);
   const [editingService, setEditingService] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation();
 
   useEffect(() => {
     fetchServices();
     fetchSpecialties();
-  }, []);
+  }, [branchId]);
 
   const fetchServices = async () => {
+    //console.log('Estoy en fetchServices \nId del branch: ', branchId);
+    setServices([]);
+    setLoading(true);
     try {
-      const res = await getAllServices(12);
-      if (res?.data) setServices(res.data);
+      if (branchId!==0) {
+        const res = await getAllServices(branchId);
+        if(res && res?.data){
+          setServices(res.data);
+          setLoading(false);
+        }
+      } else {
+        console.log('No esta entrando al if: ', branchId);
+        const res = await getServices();
+        if(res && res?.data){
+          setServices(res.data);
+          setLoading(false);
+        }
+      }
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching services:', error);
+      setLoading(false);
     }
+    
+    // try {
+
+    //   const res = await getAllServices(branchId);
+
+    //   if (res?.data) setServices(res.data);
+    // } catch (error) {
+    //   console.error('Error fetching services:', error);
+    // }
   };
 
   const fetchSpecialties = async () =>{
@@ -49,6 +83,11 @@ const Service = () => {
 
   const handleToggleService = async (serviceId, isActive) => {
     try {
+      console.log('Esta activo: ', isActive);
+      
+      if (isActive) {
+        
+      }
       await deleteService(serviceId); // ✅ Borrado lógico (cambia state_service a 0)
       const newState = isActive ? 1 : 0;
       setServices(prev =>
@@ -99,7 +138,7 @@ const Service = () => {
   return (
     <View style={{ flex: 1, backgroundColor: primary, padding: 20 }}>
       <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 16, color: '#333' }}>
-        {services.length === 1 ? 'Service' : 'Services'} Registered:{' '}
+        {services.length === 1 ? 'Service' : 'Services'} Registered :{' '}
         <Text style={{ color: '#4e73df', fontWeight: 'bold' }}>{services.length}</Text>
       </Text>
 

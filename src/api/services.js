@@ -18,7 +18,7 @@ export const createService = async (service) =>{
 };
 
 export const getAllServices = async (idBranch)=>{
-    //console.log('idBranch:', idBranch)
+    console.log('idBranch:', idBranch)
     const token = await getAuthToken();
     console.log(token);
     
@@ -28,11 +28,23 @@ export const getAllServices = async (idBranch)=>{
                 Authorization: `Bearer ${token}`
             }
         });
-        //console.log('Datos de Servicios:', res.data);
-        
         return res.data;
     } catch (error) {
         throw error
+    }
+};
+
+export const getServices = async () =>{
+    const token= await getAuthToken();
+    try {
+        const res = await axios.get('/services', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return res.data;
+    } catch (error) {
+        throw error;
     }
 };
 
