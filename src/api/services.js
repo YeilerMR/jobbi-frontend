@@ -2,9 +2,11 @@ import { getAuthToken } from "../utils/Token";
 import axios from "./axios";
 
 export const createService = async (service) =>{
+    console.log('Endpoint de crear:', service);
+    
     const token = await getAuthToken();
     try {
-        const res = await axios.post('/service',service,{
+        const res = await axios.post('/services',service,{
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -33,6 +35,15 @@ export const getAllServices = async (idBranch)=>{
         throw error
     }
 };
+
+export const getAllSpecialties = async () =>{
+    try {
+        const res = await axios.get('/specialtys');
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+};  
 
 export const updateService = async (id, service) => {
     const token = await getAuthToken();

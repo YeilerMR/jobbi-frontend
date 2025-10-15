@@ -2,9 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Alert, StyleSheet } from 'react-native';
 import CustomButton from '../ui/ButtonCustome';
+import SpecialtySelector from '../ui/SpecialtySelector';
 
 const ServiceForm = ({ 
   service = null, // null = modo crear, objeto = modo editar
+  specialties = [],
   onSubmit,
   onCancel,
   isLoading = false
@@ -13,6 +15,7 @@ const ServiceForm = ({
   const [price, setPrice] = useState('');
   const [duration, setDuration] = useState('');
   const [description, setDescription] = useState('');
+  const [idSpecialty, setIdSpecialty] = useState(null);
 
   // Si se pasa un servicio, inicializa los campos
   useEffect(() => {
@@ -21,27 +24,33 @@ const ServiceForm = ({
       setPrice(service.price?.toString() || '');
       setDuration(service.duration?.toString() || '');
       setDescription(service.description || '');
+      setIdSpecialty(service.id_specialty || null);
     } else {
       // Modo crear: resetear campos
       setName('');
       setPrice('');
       setDuration('');
       setDescription('');
+      setIdSpecialty(null);
     }
   }, [service]);
 
   const handleSubmit = () => {
     // Validación básica
     if (!name.trim()) {
-      Alert.alert('Error', 'El nombre es obligatorio');
+      Alert.alert('Error', 'Name is required');
       return;
     }
     if (!price || isNaN(price) || parseFloat(price) <= 0) {
-      Alert.alert('Error', 'El precio debe ser un número válido mayor a 0');
+      Alert.alert('Error', 'Price must be a valid number greater than 0');
       return;
     }
     if (!duration || isNaN(duration) || parseInt(duration) <= 0) {
-      Alert.alert('Error', 'La duración debe ser un número entero válido mayor a 0');
+      Alert.alert('Error', 'Duration must be a valid integer greater than 0');
+      return;
+    }
+    if (!idSpecialty) {
+      Alert.alert('Error', 'You must select a specialty');
       return;
     }
 
@@ -50,6 +59,8 @@ const ServiceForm = ({
       price: parseFloat(price),
       duration: parseInt(duration, 10),
       description: description.trim(),
+      id_specialty: idSpecialty, // ← Incluir en el payload
+      id_branch: 12,
     };
 
     onSubmit(serviceData);
@@ -58,20 +69,24 @@ const ServiceForm = ({
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        {service ? 'Editar Servicio' : 'Nuevo Servicio'}
+        {service ? 'Edit Service' : 'New Service'}
       </Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Nombre del servicio *"
+        placeholder="Service Name *"
         value={name}
         onChangeText={setName}
         maxLength={100}
       />
-
+        <SpecialtySelector
+         specialties={specialties}
+         selectedValue={idSpecialty}
+         onValueChange={setIdSpecialty}
+        />
       <TextInput
         style={styles.input}
-        placeholder="Precio (₡) *"
+        placeholder="Price (₡) *"
         value={price}
         onChangeText={setPrice}
         keyboardType="numeric"
@@ -80,7 +95,7 @@ const ServiceForm = ({
 
       <TextInput
         style={styles.input}
-        placeholder="Duración (minutos) *"
+        placeholder="Duration (minutes) *"
         value={duration}
         onChangeText={setDuration}
         keyboardType="numeric"
@@ -89,7 +104,7 @@ const ServiceForm = ({
 
       <TextInput
         style={[styles.input, styles.textArea]}
-        placeholder="Descripción (opcional)"
+        placeholder="Description (optional)"
         value={description}
         onChangeText={setDescription}
         multiline
@@ -100,7 +115,7 @@ const ServiceForm = ({
 
       <View style={styles.buttonRow}>
         <CustomButton
-          text="Cancelar"
+          text="Cancel"
           onPress={onCancel}
           backgroundColor="#6c757d"
           textColor="#fff"
@@ -109,7 +124,7 @@ const ServiceForm = ({
           style={{ flex: 1, marginRight: 8 }}
         />
         <CustomButton
-          text={isLoading ? "Guardando..." : (service ? "Actualizar" : "Crear")}
+          text={isLoading ? "Saving..." : (service ? "Update" : "Create")}
           onPress={handleSubmit}
           backgroundColor="#4e73df"
           textColor="#fff"

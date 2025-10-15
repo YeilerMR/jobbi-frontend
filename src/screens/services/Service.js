@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet, Modal } from
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { getAllServices, deleteService, updateService, createService } from '../../api/services';
+import { getAllServices, deleteService, updateService, createService, getAllSpecialties } from '../../api/services';
 import ServiceCard from '../../components/services/ServiceCard';
 import ServiceInfoModal from '../../components/services/ServiceInfoModal';
 import ServiceForm from '../../components/services/ServiceForm';
@@ -14,6 +14,7 @@ const { primary } = Colors;
 
 const Service = () => {
   const [services, setServices] = useState([]);
+  const [specialties, setSpecialties] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [formModalVisible, setFormModalVisible] = useState(false);
@@ -23,6 +24,7 @@ const Service = () => {
 
   useEffect(() => {
     fetchServices();
+    fetchSpecialties();
   }, []);
 
   const fetchServices = async () => {
@@ -33,6 +35,17 @@ const Service = () => {
       console.error('Error fetching services:', error);
     }
   };
+
+  const fetchSpecialties = async () =>{
+    try {
+      const res = await getAllSpecialties();
+      if (res?.data) {
+        setSpecialties(res.data);
+      }
+    } catch (error) {
+      console.error('Error fetching specialties:', error);
+    }
+  }
 
   const handleToggleService = async (serviceId, isActive) => {
     try {
@@ -62,6 +75,7 @@ const Service = () => {
   );
   //Handle Save Service
   const handleSaveService = async (serviceData) => {
+    console.log('Datos del servicio: ',serviceData)
     try {
       if (editingService) {
         //edition
@@ -100,7 +114,10 @@ const Service = () => {
       />
 
       <TouchableOpacity
-        onPress={() => Alert.alert('Hola Mundo!')}
+        onPress={() => {
+          setEditingService(null);
+          setFormModalVisible(true);
+        }}
         style={styles.fab}
       >
         <Ionicons name="add" size={28} color="#fff" />
@@ -111,7 +128,11 @@ const Service = () => {
         onClose={() => setModalVisible(false)}
         service={selectedService}
         onToggleStatus={handleToggleService}
-        onEdit={() => Alert.alert('Editar', 'Formulario de edición pendiente')}
+        onEdit={() => {
+          setEditingService(selectedService);
+          setFormModalVisible(true);
+          setModalVisible(false);
+        }}
       />
       <Modal
         animationType='slide'
@@ -122,6 +143,7 @@ const Service = () => {
         <View style={{flex: 1, padding: 20, backgroundColor: '#f8f9fa'}}>
           <ServiceForm
             service={editingService}
+            specialties={specialties}
             onSubmit={handleSaveService}
             onCancel={()=> setFormModalVisible(false)}
           />
