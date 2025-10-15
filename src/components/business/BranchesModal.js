@@ -46,10 +46,12 @@ const BranchesModal = ({
     }
 
     const branchData = {
+      id_business: branch?.id_business,
       name: name.trim(),
       location: location.trim(),
       phone: phone.trim(),
       email: email.trim(),
+      state_branch: branch?.state_branch
     };
 
     if (isEditing) {

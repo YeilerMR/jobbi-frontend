@@ -54,10 +54,12 @@ export const updateBranch = async (id, branchData) => {
     const token = await getAuthToken();
     try {
         const newBranchData = {
+            id_business: branchData.id_business || branchData.id_business,
             name: branchData.name || branchData.branch_name,
             location: branchData.location || branchData.branch_location,
             phone: branchData.phone || branchData.branch_phone,
-            email: branchData.email || branchData.branch_email
+            email: branchData.email || branchData.branch_email,
+            state_branch: branchData.state_Branch || branchData.state_branch
         };
         const res = await axios.put(`/branches/${id}`, newBranchData, 
             {
@@ -66,7 +68,6 @@ export const updateBranch = async (id, branchData) => {
                 }
             }
         );
-        console.log("Actualizado");
         return res.data;
     } catch (error) {
         console.log("Error actualizando", error);
