@@ -79,6 +79,8 @@ const Service = () => {
     try {
       if (editingService) {
         //edition
+        console.log('Servicio editado: ', editingService);
+        
         await updateService(editingService.id_service, serviceData);//Revisar el endpoint
         Alert.alert('Success', 'Service Updated!');
       }else {

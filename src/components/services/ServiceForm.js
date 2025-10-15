@@ -115,23 +115,23 @@ const ServiceForm = ({
 
       <View style={styles.buttonRow}>
         <CustomButton
-          text="Cancel"
-          onPress={onCancel}
-          backgroundColor="#6c757d"
-          textColor="#fff"
-          paddingVertical={12}
-          paddingHorizontal={20}
-          style={{ flex: 1, marginRight: 8 }}
-        />
-        <CustomButton
           text={isLoading ? "Saving..." : (service ? "Update" : "Create")}
           onPress={handleSubmit}
           backgroundColor="#4e73df"
           textColor="#fff"
           paddingVertical={12}
           paddingHorizontal={20}
-          style={{ flex: 1, marginLeft: 8 }}
+          style={{ flex: 1, marginRight: 8 }}
           disabled={isLoading}
+        />
+        <CustomButton
+          text="Cancel"
+          onPress={onCancel}
+          backgroundColor="#6c757d"
+          textColor="#fff"
+          paddingVertical={12}
+          paddingHorizontal={20}
+          style={{ flex: 1, marginLeft: 8 }}
         />
       </View>
     </View>

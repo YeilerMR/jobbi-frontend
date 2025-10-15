@@ -48,7 +48,7 @@ export const getAllSpecialties = async () =>{
 export const updateService = async (id, service) => {
     const token = await getAuthToken();
     try {
-        const res = await axios.put(`/service/${id}`, service, {
+        const res = await axios.put(`/services/${id}`, service, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -62,7 +62,7 @@ export const updateService = async (id, service) => {
 export const deleteService = async (id) => {
     const token = await getAuthToken();
     try {
-        const res= await axios.delete(`/service/${id}`, {
+        const res= await axios.delete(`/services/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
