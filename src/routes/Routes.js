@@ -5,6 +5,7 @@ import AddBusinessScreen from "../screens/Business/AddBusinessScreen";
 import Login from './../screens/Login';
 import Signup from './../screens/Signup';
 import Welcome from './../screens/Welcome';
+import EmployeesScreen from '../screens/Employees/EmployeesScreen.js';
 
 
 const screenOptions = {
@@ -58,71 +59,71 @@ const clientRoutes = [
 const adminRoutes = [
     {
         name: 'Home',
-        component: Welcome, 
-        options:{headerTintColor: primary}
+        component: Welcome,
+        options: { headerTintColor: primary }
     },
     {
         name: 'Profile',
         component: Welcome,//cambiar
-        options:{headerTintColor: primary}
+        options: { headerTintColor: primary }
     },
     {
         name: 'Business',
-        component: Business, 
-        options:{title: 'Business'}
+        component: Business,
+        options: { title: 'Business' }
     },
     {
         name: 'Branches',
-        component: BranchesScreen, 
-        options:{title: 'Branches'}
+        component: BranchesScreen,
+        options: { title: 'Branches' }
     },
     {
         name: 'Employees',
-        component: Welcome,//cambiar
-        options:{title: 'Employees'}
+        component: EmployeesScreen,
+        options: { title: 'Employees' }
     },
     {
         name: 'Services',
         component: Welcome,//cambiar
-        options:{title: 'Services'}
+        options: { title: 'Services' }
     },
     {
         name: 'Schedule',
         component: Welcome,//cambiar
-        options:{title: 'Schedule'}
+        options: { title: 'Schedule' }
     },
     {
         name: 'Subscriptions',
         component: Welcome,//cambiar
-        options:{title: 'Subscriptions'}
+        options: { title: 'Subscriptions' }
     },
     {
         name: 'Rewards',
         component: Welcome,//cambiar
-        options:{title: 'Rewards'}
+        options: { title: 'Rewards' }
     }
 ];
 
 const employeeRoutes = [
     {
-        name: 'Home', 
-        component: Welcome, 
-        options: {title:'Home'}
+        name: 'Home',
+        component: Welcome,
+        options: { title: 'Home' }
     },
     {
-        name: 'Profile', 
+        name: 'Profile',
         component: Welcome,//cambiar
-        options: {title:'Profile'}
+        options: { title: 'Profile' }
     },
     {
-        name: 'My Schedule', 
+        name: 'My Schedule',
         component: Welcome,//cambiar
-        options: {title:'My Schedule'}
+        options: { title: 'My Schedule' }
     },
     {
-        name: 'Rewards', 
+        name: 'Rewards',
         component: Welcome,//cambiar
-        options: {title:'Rewards'}
+        options: { title: 'Rewards' }
     }
 ];
 

@@ -6,38 +6,38 @@ import { createEmployee, getEmployeesByBranch, getMyEmployees, updateEmployee, d
 import InfoRow from '../../components/ui/InfoRow';
 import CustomButton from '../../components/ui/ButtonCustome';
 import { Colors } from '../../assets/css/general/general';
-import BranchModal from '../../components/business/BranchesModal';
+import EmployeesModal from '../../components/employee/EmployeeModal';
 import { useRoute } from '@react-navigation/native';
 const { btnEdit, btnDisable, badgeEnable, badgeDisable, textBadgeE, textBadgeD, green } = Colors;
 
 const EmployeesScreen = () => {
   const route = useRoute();
-  const { businessId } = route?.params || 0;
+  const { branchId } = route?.params || 0;
 
-  const [Branches, setBranches] = useState([]);
+  const [Employees, setEmployees] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedBranch, setSelectedBranch] = useState(null);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchBranches();
-  }, [businessId]);
+    fetchEmployees();
+  }, [branchId]);
 
-  const fetchBranches = async () => {
-    setBranches([]);
+  const fetchEmployees = async () => {
+    setEmployees([]);
     try {
       setLoading(true);
-      if (businessId) {
-        const res = await getBranchesByBusiness(businessId);
+      if (branchId) {
+        const res = await getEmployeesByBranch(branchId);
         if (res && res?.data) {
-          setBranches(res.data);
+          setEmployees(res.data);
           setLoading(false);
         }
       } else {
-        const res = await getMyBranches();
+        const res = await getMyEmployees();
         if (res && res?.data) {
-          setBranches(res.data);
+          setEmployees(res.data);
           setLoading(false);
         }
       }
@@ -46,48 +46,58 @@ const EmployeesScreen = () => {
     } catch (error) {
       setLoading(false);
     }
+    setEmployees([{
+      userName: "Usuario 1",
+      branch: {
+        id_branch: 1,
+        name: "Sucursal 1"
+      },
+      availability: "Disponible",
+      email: "1@gmail.com",
+      state_employee: 1
+    }]);
   };
 
-  const handleSaveBranch = async (BranchData) => {
+  const handleSaveEmploye = async (EmployeData) => {
     try {
-      if (BranchData.id_Branch || BranchData.id_branch) {
-        await updateBranch(BranchData.id_Branch || BranchData.id_branch, BranchData);
+      if (EmployeData.id_employee) {
+        await updateEmployee(EmployeData.id_employee, EmployeData);
         Alert.alert('Success', 'Branch Updated!');
       } else {
-        await createBranch(businessId, BranchData);
+        await createEmployee(branchId, EmployeData);
         Alert.alert('Success', 'Branch Created!');
       }
-      fetchBranches();
+      fetchEmployees();
     } catch (error) {
     }
   };
 
-  const handleToggleBranchStatus = async (Branch) => {
-    const idBranch = Branch.id_Branch || Branch.id_branch;
-    const newStatus = Branch.state_Branch || Branch.state_branch === 1 ? 0 : 1;
+  const handleToggleEmployeeStatus = async (Employee) => {
+    const id_Employee = Employee?.id_employee;
+    const newStatus = Employee.state_employee === 1 ? 0 : 1;
     const action = newStatus === 1 ? 'enable' : 'disable';
 
 
     Alert.alert(
       `Confirm ${action}`,
-      `Are you sure you want to ${action} "${Branch.name || Branch.branch_name}"?`,
+      `Are you sure you want to ${action} "${Employee.userName}"?`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Yes', onPress: async () => {
             try {
-              if (Branch.state_Branch || Branch.state_branch === 0) {
-                if(Branch.state_Branch) {
-                  Branch.state_Branch = newStatus;
-                }else{
-                  Branch.state_branch = newStatus;
+              if (Employee.state_employee === 0) {
+                if (Employee.state_employee) {
+                  Employee.state_employee = newStatus;
+                } else {
+                  Employee.state_employee = newStatus;
                 }
-                await updateBranch(idBranch, Branch);
+                await updateEmployee(id_Employee, Employee);
               } else {
-                await deleteBranch(idBranch);
+                await deleteEmployee(id_employee);
               }
-              Alert.alert('Success', `Branch ${action}d!`);
-              fetchBranches();
+              Alert.alert('Success', `Employee ${action}d!`);
+              fetchEmployees();
             } catch (error) { }
           }
         }
@@ -95,8 +105,8 @@ const EmployeesScreen = () => {
     );
   };
 
-  const openEditModal = (Branch) => {
-    setSelectedBranch(Branch);
+  const openEditModal = (Employee) => {
+    setSelectedEmployee(Employee);
     setModalVisible(true);
   }
 
@@ -118,28 +128,25 @@ const EmployeesScreen = () => {
         style={{ flexDirection: 'row', alignItems: 'flex-start' }}
         onPress={() => navigation.navigate('Sucursales')}
       >
-        <Ionicons name="storefront-outline" size={24} color={'#4e73df'}></Ionicons>
+        <Ionicons name="person" size={24} color={'#4e73df'}></Ionicons>
         <View style={{ marginLeft: 12, flex: 1 }}>
           {/* Badge Info */}
-          <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 4 }}>{item.name || item.branch_name}</Text>
-          <View style={[styles.statusBadge, { backgroundColor: (item.state_Branch || item.state_branch) === 1 ? badgeEnable : badgeDisable }]}>
-            <Text style={{ fontSize: 12, fontWeight: '600', color: (item.state_Branch || item.state_branch) === 1 ? textBadgeE : textBadgeD }}>
-              {item.state_Branch || item.state_branch === 1 ? 'Enabled' : 'Disabled'}
+          <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 4 }}>{item.userName}</Text>
+          <View style={[styles.statusBadge, { backgroundColor: (item.state_employee) === 1 ? badgeEnable : badgeDisable }]}>
+            <Text style={{ fontSize: 12, fontWeight: '600', color: (item.state_employee) === 1 ? textBadgeE : textBadgeD }}>
+              {item.state_employee === 1 ? 'Enabled' : 'Disabled'}
             </Text>
           </View>
-          {/* Branch name */}
           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 4, marginBottom: 12 }}>
 
           </View>
-          <InfoRow iconName="location-outline" text={item.location || item.branch_location} />
-          <InfoRow iconName="call-outline" text={item.phone || item.branch_phone} />
-          <InfoRow iconName="mail-outline" text={item.email || item.branch_email} />
+          <InfoRow iconName="location-outline" text={item.branch.name} />
         </View>
 
       </TouchableOpacity>
       <View style={styles.buttons}>
         <CustomButton text="Edit" backgroundColor={btnEdit} onPress={() => openEditModal(item)} />
-        <CustomButton text={item.state_Branch || item.state_branch === 1 ? 'Disable' : 'Enable'} backgroundColor={item.state_Branch || item.state_branch === 1 ? btnDisable : green} onPress={() => handleToggleBranchStatus(item)} />
+        <CustomButton text={item.state_employee === 1 ? 'Disable' : 'Enable'} backgroundColor={item.state_employee === 1 ? btnDisable : green} onPress={() => handleToggleEmployeeStatus(item)} />
       </View>
     </View>
   );
@@ -147,26 +154,26 @@ const EmployeesScreen = () => {
   return (
     <View style={{ flex: 1, backgroundColor: '#f4f6f9', padding: 20 }}>
       <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 16, color: '#333' }}>
-        {Branches.length === 1 ? 'Branch' : 'Branches'} Registered {businessId ? 'for business' : ''}:{' '}
-        <Text style={{ color: '#4e73df', fontWeight: 'bold' }}>{Branches.length}</Text>{' '}
+        {Employees.length === 1 ? 'Employee' : 'Employees'} Registered {branchId ? 'for branches' : ''}:{' '}
+        <Text style={{ color: '#4e73df', fontWeight: 'bold' }}>{Employees.length}</Text>{' '}
       </Text>
       <FlatList
-        data={Branches}
-        keyExtractor={(item) => item.id_Branch || item.id_branch}
+        data={Employees}
+        keyExtractor={(item) => item.id_employee}
         renderItem={renderBranch}
         ListEmptyComponent={
-          <Text style={{ textAlign: 'center', marginTop: 50, color: '#888' }}>{loading ? 'Loading...' : 'You have no registered Branches.'}</Text>
+          <Text style={{ textAlign: 'center', marginTop: 50, color: '#888' }}>{loading ? 'Loading...' : 'You have no registered Employees.'}</Text>
         }
       />
 
       <TouchableOpacity
         onPress={() => {
-          if (!businessId) {
-            Alert.alert('Info', 'Please, select or create new business.');
-            navigation.navigate('Business');
-            return;
+          if (!branchId) {
+            // Alert.alert('Info', 'Please, select or create new branch.');
+            // navigation.navigate('Branches');
+            // return;
           }
-          setSelectedBranch(null);
+          setSelectedEmployee(null);
           setModalVisible(true);
         }}
         style={{
@@ -189,11 +196,11 @@ const EmployeesScreen = () => {
         <Ionicons name="add" size={28} color="#fff" />
       </TouchableOpacity>
       {/* Add or Edit modal */}
-      <BranchModal
+      <EmployeesModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        onSave={handleSaveBranch}
-        branch={selectedBranch}
+        onSave={handleSaveEmploye}
+        employee={selectedEmployee}
       />
     </View>
   );
