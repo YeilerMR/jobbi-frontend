@@ -36,8 +36,8 @@ export const PageLogo = styled.Image`
 `;
 
 export const Avatar = styled.Image`
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     margin: auto;
     border-radius: 50px;
     border-width: 2px;
