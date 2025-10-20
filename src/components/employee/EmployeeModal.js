@@ -37,7 +37,6 @@ const EmployeesModal = ({
         }
     }, [employee, visible]);
 
-    // Buscar usuarios cuando cambia el texto
     useEffect(() => {
         const delayDebounce = setTimeout(() => {
             if (userName.length > 1) {
@@ -155,7 +154,7 @@ const EmployeesModal = ({
                                                     onPress={handleInvite}
                                                 >
                                                     <Text style={styles.inviteButtonText}>
-                                                        Invitar
+                                                        Invite
                                                     </Text>
                                                 </TouchableOpacity>
                                             )}
