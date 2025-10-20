@@ -12,7 +12,7 @@ const { btnEdit, btnDisable, badgeEnable, badgeDisable, textBadgeE, textBadgeD, 
 
 const EmployeesScreen = () => {
   const route = useRoute();
-  const { branchId } = route?.params || 0;
+  const branchId = route?.params?.branchId ?? null;
 
   const [Employees, setEmployees] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -46,26 +46,16 @@ const EmployeesScreen = () => {
     } catch (error) {
       setLoading(false);
     }
-    setEmployees([{
-      userName: "Usuario 1",
-      branch: {
-        id_branch: 1,
-        name: "Sucursal 1"
-      },
-      availability: "Disponible",
-      email: "1@gmail.com",
-      state_employee: 1
-    }]);
   };
 
   const handleSaveEmploye = async (EmployeData) => {
     try {
       if (EmployeData.id_employee) {
         await updateEmployee(EmployeData.id_employee, EmployeData);
-        Alert.alert('Success', 'Branch Updated!');
+        Alert.alert('Success', 'Employee Updated!');
       } else {
         await createEmployee(branchId, EmployeData);
-        Alert.alert('Success', 'Branch Created!');
+        Alert.alert('Success', 'Employee Invited!');
       }
       fetchEmployees();
     } catch (error) {
@@ -74,8 +64,8 @@ const EmployeesScreen = () => {
 
   const handleToggleEmployeeStatus = async (Employee) => {
     const id_Employee = Employee?.id_employee;
-    const newStatus = Employee.state_employee === 1 ? 0 : 1;
-    const action = newStatus === 1 ? 'enable' : 'disable';
+    const newStatus = Employee.availability === 1 ? 0 : 1;
+    const action = newStatus === 1 ? 'enable' : 'delete';
 
 
     Alert.alert(
@@ -86,15 +76,15 @@ const EmployeesScreen = () => {
         {
           text: 'Yes', onPress: async () => {
             try {
-              if (Employee.state_employee === 0) {
-                if (Employee.state_employee) {
-                  Employee.state_employee = newStatus;
+              if (Employee.availability === 0) {
+                if (Employee.availability) {
+                  Employee.availability = newStatus;
                 } else {
-                  Employee.state_employee = newStatus;
+                  Employee.availability = newStatus;
                 }
                 await updateEmployee(id_Employee, Employee);
               } else {
-                await deleteEmployee(id_employee);
+                await deleteEmployee(id_Employee);
               }
               Alert.alert('Success', `Employee ${action}d!`);
               fetchEmployees();
@@ -131,22 +121,23 @@ const EmployeesScreen = () => {
         <Ionicons name="person" size={24} color={'#4e73df'}></Ionicons>
         <View style={{ marginLeft: 12, flex: 1 }}>
           {/* Badge Info */}
-          <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 4 }}>{item.userName}</Text>
-          <View style={[styles.statusBadge, { backgroundColor: (item.state_employee) === 1 ? badgeEnable : badgeDisable }]}>
-            <Text style={{ fontSize: 12, fontWeight: '600', color: (item.state_employee) === 1 ? textBadgeE : textBadgeD }}>
-              {item.state_employee === 1 ? 'Enabled' : 'Disabled'}
+          <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 4 }}>{item.name}</Text>
+          <View style={[styles.statusBadge, { backgroundColor: (item.availability) === 1 ? badgeEnable : badgeDisable }]}>
+            <Text style={{ fontSize: 12, fontWeight: '600', color: (item.availability) === 1 ? textBadgeE : textBadgeD }}>
+              {item.availability === 1 ? 'Enabled' : 'Disabled'}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 4, marginBottom: 12 }}>
 
           </View>
-          <InfoRow iconName="location-outline" text={item.branch.name} />
+          <InfoRow iconName="location-outline" text={item.branch_name || 'N/A'} />
+          <InfoRow iconName="mail-outline" text={item.email || 'N/A'} />
         </View>
 
       </TouchableOpacity>
       <View style={styles.buttons}>
-        <CustomButton text="Edit" backgroundColor={btnEdit} onPress={() => openEditModal(item)} />
-        <CustomButton text={item.state_employee === 1 ? 'Disable' : 'Enable'} backgroundColor={item.state_employee === 1 ? btnDisable : green} onPress={() => handleToggleEmployeeStatus(item)} />
+        {/* <CustomButton text="Edit" backgroundColor={btnEdit} onPress={() => openEditModal(item)} /> */}
+        <CustomButton text={item.availability === 1 ? 'Delete' : 'Enable'} backgroundColor={item.availability === 1 ? btnDisable : green} onPress={() => handleToggleEmployeeStatus(item)} />
       </View>
     </View>
   );
@@ -169,9 +160,9 @@ const EmployeesScreen = () => {
       <TouchableOpacity
         onPress={() => {
           if (!branchId) {
-            // Alert.alert('Info', 'Please, select or create new branch.');
-            // navigation.navigate('Branches');
-            // return;
+            Alert.alert('Info', 'Please, select or create new branch.');
+            navigation.navigate('Branches');
+            return;
           }
           setSelectedEmployee(null);
           setModalVisible(true);
@@ -200,6 +191,7 @@ const EmployeesScreen = () => {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onSave={handleSaveEmploye}
+        branch={branchId}
         employee={selectedEmployee}
       />
     </View>
