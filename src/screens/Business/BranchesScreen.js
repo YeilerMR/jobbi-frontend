@@ -12,7 +12,7 @@ const { btnEdit, btnDisable, badgeEnable, badgeDisable, textBadgeE, textBadgeD, 
 
 const BranchesScreen = () => {
   const route = useRoute();
-  const { businessId } = route?.params || 0;
+  const businessId = route?.params?.businessId ?? null;
 
   const [Branches, setBranches] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -77,9 +77,9 @@ const BranchesScreen = () => {
           text: 'Yes', onPress: async () => {
             try {
               if (Branch.state_Branch || Branch.state_branch === 0) {
-                if(Branch.state_Branch) {
+                if (Branch.state_Branch) {
                   Branch.state_Branch = newStatus;
-                }else{
+                } else {
                   Branch.state_branch = newStatus;
                 }
                 await updateBranch(idBranch, Branch);
@@ -116,7 +116,7 @@ const BranchesScreen = () => {
     >
       <TouchableOpacity
         style={{ flexDirection: 'row', alignItems: 'flex-start' }}
-        onPress={() => navigation.navigate('Sucursales')}
+        onPress={() => navigation.navigate('Employees', { branchId: item.id_Branch || item.id_branch })}
       >
         <Ionicons name="storefront-outline" size={24} color={'#4e73df'}></Ionicons>
         <View style={{ marginLeft: 12, flex: 1 }}>

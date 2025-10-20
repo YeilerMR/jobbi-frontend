@@ -5,8 +5,8 @@ import AddBusinessScreen from "../screens/Business/AddBusinessScreen";
 import Login from './../screens/Login';
 import Signup from './../screens/Signup';
 import Welcome from './../screens/Welcome';
+import EmployeesScreen from '../screens/Employees/EmployeesScreen.js';
 import { Ionicons } from '@expo/vector-icons';
-
 
 const screenOptions = {
     headerStyle: {
@@ -82,7 +82,7 @@ const adminRoutes = [
     },
     {
         name: 'Employees',
-        component: Welcome,//cambiar
+        component: EmployeesScreen,
         options:{title: 'Employees'},
         icon: (focused) => <Ionicons name='people-circle' size={24} color={focused ? '#6200ee' : '#757575'}/>,
     },
@@ -114,24 +114,24 @@ const adminRoutes = [
 
 const employeeRoutes = [
     {
-        name: 'Home', 
-        component: Welcome, 
-        options: {title:'Home'}
+        name: 'Home',
+        component: Welcome,
+        options: { title: 'Home' }
     },
     {
-        name: 'Profile', 
+        name: 'Profile',
         component: Welcome,//cambiar
-        options: {title:'Profile'}
+        options: { title: 'Profile' }
     },
     {
-        name: 'My Schedule', 
+        name: 'My Schedule',
         component: Welcome,//cambiar
-        options: {title:'My Schedule'}
+        options: { title: 'My Schedule' }
     },
     {
-        name: 'Rewards', 
+        name: 'Rewards',
         component: Welcome,//cambiar
-        options: {title:'Rewards'}
+        options: { title: 'Rewards' }
     }
 ];
 
