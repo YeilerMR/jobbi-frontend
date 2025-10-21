@@ -1,5 +1,5 @@
 // src/components/services/ServiceInfoModal.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Modal, TouchableOpacity, Switch, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import InfoRow from '../ui/InfoRow';
@@ -9,8 +9,14 @@ import { Colors } from '../../assets/css/general/general';
 
 const { btnEdit, badgeEnable, badgeDisable } = Colors;
 
-const ServiceInfoModal = ({ visible, onClose, service, onToggleStatus, onEdit }) => {
+const ServiceInfoModal = ({ visible, onClose, service, onToggleStatus, onEdit, canManageStatus = false }) => {
   const [isServiceActive, setIsServiceActive] = useState(service?.state_service === 1);
+
+  useEffect(() => {
+    if (service) {
+      setIsServiceActive(service.state_service === 1);
+    }
+  }, [service]);
 
   const handleToggle = (value) => {
     setIsServiceActive(value);
@@ -20,12 +26,7 @@ const ServiceInfoModal = ({ visible, onClose, service, onToggleStatus, onEdit })
   if (!service) return null;
 
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={visible}
-      onRequestClose={onClose}
-    >
+    <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
@@ -39,8 +40,23 @@ const ServiceInfoModal = ({ visible, onClose, service, onToggleStatus, onEdit })
             <InfoRow iconName="document-text-outline" text={service.description || 'No Description'} />
             <InfoRow iconName="time-outline" text={`${service.duration || 'N/A'} min`} />
           </View>
-
-          <View style={styles.toggleContainer}>
+          {canManageStatus && (
+            <View style={styles.toggleContainer}>
+              <StatusBadge isActive={isServiceActive} />
+              <Switch
+                value={isServiceActive}
+                onValueChange={handleToggle}
+                trackColor={{ false: badgeDisable, true: badgeEnable }}
+                thumbColor={isServiceActive ? '#fff' : '#f4f4f4'}
+              />
+            </View>
+          )}
+          {!canManageStatus && (
+            <Text style={{ color: '#888', marginTop: 10, fontStyle: 'italic' }}>
+              Status can only be changed from Branch view.
+            </Text>
+          )}
+          {/* <View style={styles.toggleContainer}>
             <StatusBadge isActive={isServiceActive} />
             <Switch
               value={isServiceActive}
@@ -48,7 +64,7 @@ const ServiceInfoModal = ({ visible, onClose, service, onToggleStatus, onEdit })
               trackColor={{ false: badgeDisable, true: badgeEnable }}
               thumbColor={isServiceActive ? '#fff' : '#f4f4f4'}
             />
-          </View>
+          </View> */}
 
           <CustomButton
             text="Editar"

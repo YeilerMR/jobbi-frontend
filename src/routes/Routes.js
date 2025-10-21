@@ -90,7 +90,7 @@ const adminRoutes = [
     },
     {
         name: 'Services',
-        component: Welcome,//cambiar
+        component: Service,//cambiar
         options:{title: 'Services'},
          icon: (focused) => <Ionicons name='ribbon' size={24} color={focused ? '#6200ee' : '#757575'}/>,
     },

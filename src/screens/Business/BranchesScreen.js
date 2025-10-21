@@ -22,7 +22,8 @@ const BranchesScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
 
-  const { setServiceViewMode } = useServiceView();
+  //const { setServiceViewMode } = useServiceView();
+  const { setBranchMode } = useServiceView();
 
   // useEffect(() => {
   //   fetchBranches();
@@ -75,32 +76,28 @@ const BranchesScreen = () => {
     const newStatus = Branch.state_Branch || Branch.state_branch === 1 ? 0 : 1;
     const action = newStatus === 1 ? 'enable' : 'disable';
 
-
-    Alert.alert(
-      `Confirm ${action}`,
-      `Are you sure you want to ${action} "${Branch.name || Branch.branch_name}"?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Yes', onPress: async () => {
-            try {
-              if (Branch.state_Branch || Branch.state_branch === 0) {
-                if (Branch.state_Branch) {
-                  Branch.state_Branch = newStatus;
-                } else {
-                  Branch.state_branch = newStatus;
-                }
-                await updateBranch(idBranch, Branch);
+    Alert.alert(`Confirm ${action}`, `Are you sure you want to ${action} "${Branch.name || Branch.branch_name}"?`, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Yes',
+        onPress: async () => {
+          try {
+            if (Branch.state_Branch || Branch.state_branch === 0) {
+              if (Branch.state_Branch) {
+                Branch.state_Branch = newStatus;
               } else {
-                await deleteBranch(idBranch);
+                Branch.state_branch = newStatus;
               }
-              Alert.alert('Success', `Branch ${action}d!`);
-              fetchBranches();
-            } catch (error) { }
-          }
-        }
-      ]
-    );
+              await updateBranch(idBranch, Branch);
+            } else {
+              await deleteBranch(idBranch);
+            }
+            Alert.alert('Success', `Branch ${action}d!`);
+            fetchBranches();
+          } catch (error) {}
+        },
+      },
+    ]);
   };
 
   const openEditModal = (Branch) => {
@@ -124,18 +121,11 @@ const BranchesScreen = () => {
     >
       <TouchableOpacity
         style={{ flexDirection: 'row', alignItems: 'flex-start' }}
-        // onPress={() => {
-        //   setServiceViewMode({
-        //     mode: 'branch',
-        //     branchId: item.id_branch || item.id_Branch,
-        //   });
-        //   navigation.navigate('Services');
-        // }}
-        // onPress={() =>
-        //   navigation.navigate('Services', {
-        //     branchId: item.id_branch || item.id_Branch,mode: 'branch'})
-        // }
-        onPress={() => navigation.navigate('Employees', { branchId: item.id_Branch || item.id_branch })}
+        onPress={() => {
+          setBranchMode(item.id_branch || item.id_Branch);
+          navigation.navigate('Services');
+        }}
+        //onPress={() => navigation.navigate('Employees', { branchId: item.id_Branch || item.id_branch })}
       >
         <Ionicons name="storefront-outline" size={24} color={'#4e73df'}></Ionicons>
         <View style={{ marginLeft: 12, flex: 1 }}>

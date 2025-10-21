@@ -8,6 +8,7 @@ import CustomButton from '../../components/ui/ButtonCustome';
 import { Colors } from '../../assets/css/general/general';
 import EmployeesModal from '../../components/employee/EmployeeModal';
 import { useRoute } from '@react-navigation/native';
+import ServiceEmployeeTabs from '../../components/ui/ServiceEmployeeTabs';
 const { btnEdit, btnDisable, badgeEnable, badgeDisable, textBadgeE, textBadgeD, green } = Colors;
 
 const EmployeesScreen = () => {
@@ -144,6 +145,7 @@ const EmployeesScreen = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#f4f6f9', padding: 20 }}>
+      <ServiceEmployeeTabs activeTab='employees' branchId={branchId}/>
       <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 16, color: '#333' }}>
         {Employees.length === 1 ? 'Employee' : 'Employees'} Registered {branchId ? 'for branches' : ''}:{' '}
         <Text style={{ color: '#4e73df', fontWeight: 'bold' }}>{Employees.length}</Text>{' '}

@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+// Service.js - VERSIÓN COMPLETA
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet, Modal } from 'react-native';
-import { useNavigation, useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useServiceView } from '../../hooks/ServiceContext';
-
-
 import {
   getServices,
   getAllServices,
@@ -20,18 +19,15 @@ import ServiceForm from '../../components/services/ServiceForm';
 import ServiceEmployeeTabs from '../../components/ui/ServiceEmployeeTabs';
 import { Colors } from '../../assets/css/general/general';
 
-import { useRoute } from '@react-navigation/native';
-//
-
 const { primary } = Colors;
 
 const Service = () => {
-
-  const { serviceViewMode, setServiceViewMode } = useServiceView();
-  const route = useRoute();
-  const isFocused = useIsFocused();
-
+  const { serviceViewMode, resetToAllMode } = useServiceView();
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  
+  // Referencia para trackear si venimos de Branches
+  const cameFromBranchesRef = useRef(false);
 
   const [services, setServices] = useState([]);
   const [specialties, setSpecialties] = useState([]);
@@ -41,42 +37,52 @@ const Service = () => {
   const [editingService, setEditingService] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Efecto principal para cargar servicios
+  useEffect(() => {
+    
+    if (isFocused) {
+      fetchServicesBasedOnMode();
+    }
+  }, [isFocused, serviceViewMode.mode, serviceViewMode.branchId]);
+
+  // Efecto para detectar navegación desde Branches vs Drawer
   useFocusEffect(
     useCallback(() => {
-      if (serviceViewMode.mode === 'branch' && serviceViewMode.branchId != null) {
-        fetchServices(serviceViewMode.branchId);
-      } else {
-        fetchServices(null);
+      // Cuando la pantalla gana foco, verificar si venimos de Branches
+      const navigationState = navigation.getState();
+      const currentRoute = navigationState.routes[navigationState.index]?.name;
+      const previousRoute = navigationState.routes[navigationState.index - 1]?.name;
+      
+     
+      
+      if (previousRoute === 'Branches') {
+        // Venimos de Branches - NO resetear
+        cameFromBranchesRef.current = true;
+      
+      } else if (previousRoute && previousRoute !== 'Branches') {
+        // Venimos de otra pantalla (probablemente drawer) - RESETEAR
+        cameFromBranchesRef.current = false;
+       
+        resetToAllMode();
       }
-    }, [serviceViewMode])
+      
+      // Si no hay ruta anterior (app recién iniciada), también resetear
+      if (!previousRoute) {
+       
+        resetToAllMode();
+      }
+    }, [navigation, resetToAllMode])
   );
 
-  //usar si no funciona
-//   useFocusEffect(
-//   useCallback(() => {
-//     // Si no estamos en modo branch, asegúrate de estar en modo all
-//     if (serviceViewMode.mode !== 'branch') {
-//       setServiceViewMode({ mode: 'all', branchId: null });
-//     }
-
-//     const branchId = serviceViewMode.mode === 'branch' ? serviceViewMode.branchId : null;
-//     fetchServices(branchId);
-//   }, [serviceViewMode])
-// );
-
-  useEffect(() => {
-    fetchSpecialties();
-  }, []);
-
-  const fetchServices = async (branchId) => {
+  const fetchServicesBasedOnMode = async () => {
     setLoading(true);
     try {
       let res;
-      if (branchId != null) {
-        console.log('Fetching services for branch:', branchId);
-        res = await getAllServices(branchId);
+      if (serviceViewMode.mode === 'branch' && serviceViewMode.branchId != null) {
+      
+        res = await getAllServices(serviceViewMode.branchId);
       } else {
-        console.log('Fetching all services (no branch filter)');
+        
         res = await getServices();
       }
       setServices(res?.data || []);
@@ -99,18 +105,30 @@ const Service = () => {
     }
   };
 
-  const handleToggleService = async (serviceId, isActive) => {
-    try {
-      console.log('Esta activo: ', isActive);
+  useEffect(() => {
+    fetchSpecialties();
+  }, []);
 
-      if (isActive) {
+  const handleToggleService = async (serviceId, newActiveStatus) => {
+    try {
+      if (newActiveStatus) {
+        await updateService(serviceId, { state_service: 1 });
+      } else {
+        await deleteService(serviceId);
       }
-      await deleteService(serviceId); // ✅ Borrado lógico (cambia state_service a 0)
-      const newState = isActive ? 1 : 0;
-      setServices((prev) => prev.map((s) => (s.id_service === serviceId ? { ...s, state_service: newState } : s)));
-      Alert.alert('Success', `Service ${isActive ? 'Enabled' : 'Disabled'}`);
+
+      setServices((prev) =>
+        prev.map((s) => (s.id_service === serviceId ? { ...s, state_service: newActiveStatus ? 1 : 0 } : s)),
+      );
+
+      Alert.alert('Success', `Service ${newActiveStatus ? 'Enabled' : 'Disabled'}`);
     } catch (error) {
-      Alert.alert('Error', 'No se pudo actualizar el estado.');
+      console.error('Error toggling service status:', error);
+      Alert.alert('Error', 'No se pudo actualizar el estado del servicio.');
+
+      setServices((prev) =>
+        prev.map((s) => (s.id_service === serviceId ? { ...s, state_service: newActiveStatus ? 0 : 1 } : s)),
+      );
     }
   };
 
@@ -120,7 +138,7 @@ const Service = () => {
   };
 
   const renderService = ({ item }) => <ServiceCard service={item} onPress={() => openInfoModal(item)} />;
-  //Handle Save Service
+
   const handleSaveService = async (serviceData) => {
     try {
       if (editingService) {
@@ -131,24 +149,27 @@ const Service = () => {
         Alert.alert('Success', 'Service Created!');
       }
       setFormModalVisible(false);
-
-      // ✅ Recarga con el branchId actual
-      const { branchId, fromBranches } = route.params || {};
-      const currentBranchId = fromBranches && branchId != null ? branchId : null;
-      fetchServices(currentBranchId);
+      fetchServicesBasedOnMode();
     } catch (error) {
       Alert.alert('Error', 'Can not create the service.');
     }
   };
-  const branchId = route.params?.branchId ?? null;
+
+  const canManageStatus = serviceViewMode.mode === 'branch' && serviceViewMode.fromBranches;
 
   return (
     <View style={{ flex: 1, backgroundColor: primary, padding: 20 }}>
-      <ServiceEmployeeTabs activeTab="services" branchId={branchId} />
+      <ServiceEmployeeTabs
+        activeTab="services"
+        branchId={serviceViewMode.mode === 'branch' ? serviceViewMode.branchId : null}
+      />
 
       <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 16, color: '#333' }}>
         {services.length === 1 ? 'Service' : 'Services'} Registered :{' '}
         <Text style={{ color: '#4e73df', fontWeight: 'bold' }}>{services.length}</Text>
+        {serviceViewMode.mode === 'branch' && (
+          <Text style={{ fontSize: 12, color: '#666', marginLeft: 8 }}>(Filtered by branch)</Text>
+        )}
       </Text>
 
       <FlatList
@@ -181,7 +202,9 @@ const Service = () => {
           setFormModalVisible(true);
           setModalVisible(false);
         }}
+        canManageStatus={canManageStatus}
       />
+
       <Modal
         animationType="slide"
         transparent={false}
@@ -221,20 +244,3 @@ const styles = StyleSheet.create({
 });
 
 export default Service;
-
-// useFocusEffect(
-//   useCallback(() => {
-//     // Obtén branchId de los parámetros actuales (puede ser null)
-//     const branchId = route.params?.branchId ?? null;
-//     fetchServices(branchId);
-//   }, [route.key]) // ✅ clave: usar route.key
-// );
-
-// useEffect(() => {
-//   if (isFocused) {
-//     console.log('🔍 route.params in Service:', route.params);
-//     const branchId = route.params?.branchId ?? null;
-//     console.log('Current route.params:', route.params);
-//     fetchServices(branchId);
-//   }
-// }, [isFocused, route.params?.branchId]);
