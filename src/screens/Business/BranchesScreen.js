@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, Button, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { getMyBranches, getBranchesByBusiness, createBranch, updateBranch, deleteBranch } from '../../api/branches';
 import InfoRow from '../../components/ui/InfoRow';
@@ -8,6 +8,8 @@ import CustomButton from '../../components/ui/ButtonCustome';
 import { Colors } from '../../assets/css/general/general';
 import BranchModal from '../../components/business/BranchesModal';
 import { useRoute } from '@react-navigation/native';
+import { useServiceView } from '../../hooks/ServiceContext';
+
 const { btnEdit, btnDisable, badgeEnable, badgeDisable, textBadgeE, textBadgeD, green } = Colors;
 
 const BranchesScreen = () => {
@@ -20,9 +22,17 @@ const BranchesScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchBranches();
-  }, [businessId]);
+  //const { setServiceViewMode } = useServiceView();
+  const { setBranchMode } = useServiceView();
+
+  // useEffect(() => {
+  //   fetchBranches();
+  // }, [businessId]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchBranches();
+    }, [businessId]),
+  );
 
   const fetchBranches = async () => {
     setBranches([]);
@@ -58,8 +68,7 @@ const BranchesScreen = () => {
         Alert.alert('Success', 'Branch Created!');
       }
       fetchBranches();
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleToggleBranchStatus = async (Branch) => {
@@ -67,38 +76,34 @@ const BranchesScreen = () => {
     const newStatus = Branch.state_Branch || Branch.state_branch === 1 ? 0 : 1;
     const action = newStatus === 1 ? 'enable' : 'disable';
 
-
-    Alert.alert(
-      `Confirm ${action}`,
-      `Are you sure you want to ${action} "${Branch.name || Branch.branch_name}"?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Yes', onPress: async () => {
-            try {
-              if (Branch.state_Branch || Branch.state_branch === 0) {
-                if (Branch.state_Branch) {
-                  Branch.state_Branch = newStatus;
-                } else {
-                  Branch.state_branch = newStatus;
-                }
-                await updateBranch(idBranch, Branch);
+    Alert.alert(`Confirm ${action}`, `Are you sure you want to ${action} "${Branch.name || Branch.branch_name}"?`, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Yes',
+        onPress: async () => {
+          try {
+            if (Branch.state_Branch || Branch.state_branch === 0) {
+              if (Branch.state_Branch) {
+                Branch.state_Branch = newStatus;
               } else {
-                await deleteBranch(idBranch);
+                Branch.state_branch = newStatus;
               }
-              Alert.alert('Success', `Branch ${action}d!`);
-              fetchBranches();
-            } catch (error) { }
-          }
-        }
-      ]
-    );
+              await updateBranch(idBranch, Branch);
+            } else {
+              await deleteBranch(idBranch);
+            }
+            Alert.alert('Success', `Branch ${action}d!`);
+            fetchBranches();
+          } catch (error) {}
+        },
+      },
+    ]);
   };
 
   const openEditModal = (Branch) => {
     setSelectedBranch(Branch);
     setModalVisible(true);
-  }
+  };
 
   const renderBranch = ({ item }) => (
     <View
@@ -116,30 +121,46 @@ const BranchesScreen = () => {
     >
       <TouchableOpacity
         style={{ flexDirection: 'row', alignItems: 'flex-start' }}
-        onPress={() => navigation.navigate('Employees', { branchId: item.id_Branch || item.id_branch })}
+        onPress={() => {
+          setBranchMode(item.id_branch || item.id_Branch);
+          navigation.navigate('Services');
+        }}
+        //onPress={() => navigation.navigate('Employees', { branchId: item.id_Branch || item.id_branch })}
       >
         <Ionicons name="storefront-outline" size={24} color={'#4e73df'}></Ionicons>
         <View style={{ marginLeft: 12, flex: 1 }}>
           {/* Badge Info */}
           <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 4 }}>{item.name || item.branch_name}</Text>
-          <View style={[styles.statusBadge, { backgroundColor: (item.state_Branch || item.state_branch) === 1 ? badgeEnable : badgeDisable }]}>
-            <Text style={{ fontSize: 12, fontWeight: '600', color: (item.state_Branch || item.state_branch) === 1 ? textBadgeE : textBadgeD }}>
+          <View
+            style={[
+              styles.statusBadge,
+              { backgroundColor: (item.state_Branch || item.state_branch) === 1 ? badgeEnable : badgeDisable },
+            ]}
+          >
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: '600',
+                color: (item.state_Branch || item.state_branch) === 1 ? textBadgeE : textBadgeD,
+              }}
+            >
               {item.state_Branch || item.state_branch === 1 ? 'Enabled' : 'Disabled'}
             </Text>
           </View>
           {/* Branch name */}
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 4, marginBottom: 12 }}>
-
-          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 4, marginBottom: 12 }}></View>
           <InfoRow iconName="location-outline" text={item.location || item.branch_location} />
           <InfoRow iconName="call-outline" text={item.phone || item.branch_phone} />
           <InfoRow iconName="mail-outline" text={item.email || item.branch_email} />
         </View>
-
       </TouchableOpacity>
       <View style={styles.buttons}>
         <CustomButton text="Edit" backgroundColor={btnEdit} onPress={() => openEditModal(item)} />
-        <CustomButton text={item.state_Branch || item.state_branch === 1 ? 'Disable' : 'Enable'} backgroundColor={item.state_Branch || item.state_branch === 1 ? btnDisable : green} onPress={() => handleToggleBranchStatus(item)} />
+        <CustomButton
+          text={item.state_Branch || item.state_branch === 1 ? 'Disable' : 'Enable'}
+          backgroundColor={item.state_Branch || item.state_branch === 1 ? btnDisable : green}
+          onPress={() => handleToggleBranchStatus(item)}
+        />
       </View>
     </View>
   );
@@ -155,7 +176,9 @@ const BranchesScreen = () => {
         keyExtractor={(item) => item.id_Branch || item.id_branch}
         renderItem={renderBranch}
         ListEmptyComponent={
-          <Text style={{ textAlign: 'center', marginTop: 50, color: '#888' }}>{loading ? 'Loading...' : 'You have no registered Branches.'}</Text>
+          <Text style={{ textAlign: 'center', marginTop: 50, color: '#888' }}>
+            {loading ? 'Loading...' : 'You have no registered Branches.'}
+          </Text>
         }
       />
 

@@ -1,23 +1,4 @@
-// import React from 'react';
-// import { View, Text, TouchableOpacity } from 'react-native';
 
-// const ButtonCustome = ({ styles, btnColor, text, onPress }) => {
-//   return (
-//     <View style={styles.buttons}>
-//       <TouchableOpacity
-//         style={[styles.customButton, { backgroundColor: btnColor }]}
-//         onPress={onPress}
-//       >
-//         <Text style={styles.buttonText}>{text}</Text>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// };
-
-// export default ButtonCustome;
-
-
-// components/CustomButton.js
 import React from 'react';
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // o la librería que uses
@@ -106,6 +87,8 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    
+
   },
   column: {
     flexDirection: 'column',

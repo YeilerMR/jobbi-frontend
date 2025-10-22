@@ -31,6 +31,8 @@ const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
         if (success && data) {
 
           const userRole = data?.role;
+          //console.log('User Token:',success?.token);
+          
           if (userRole !== undefined) {
             setUserRole(userRole);
             navigation.navigate('PrivateArea')
@@ -38,8 +40,6 @@ const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
             setError('User rol Not found')
           }
         }
-        // const res = await loginPost(values);
-        // if (res) navigation.navigate("PrivateArea", { screen: "Welcome" });
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (

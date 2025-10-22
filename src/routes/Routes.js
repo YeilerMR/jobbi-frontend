@@ -5,6 +5,8 @@ import AddBusinessScreen from "../screens/Business/AddBusinessScreen";
 import Login from './../screens/Login';
 import Signup from './../screens/Signup';
 import Welcome from './../screens/Welcome';
+import Service from '../screens/services/Service.js';
+
 import EmployeesScreen from '../screens/Employees/EmployeesScreen.js';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -88,7 +90,7 @@ const adminRoutes = [
     },
     {
         name: 'Services',
-        component: Welcome,//cambiar
+        component: Service,//cambiar
         options:{title: 'Services'},
          icon: (focused) => <Ionicons name='ribbon' size={24} color={focused ? '#6200ee' : '#757575'}/>,
     },
