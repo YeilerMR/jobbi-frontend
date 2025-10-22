@@ -6,6 +6,8 @@ import Login from './../screens/Login';
 import Signup from './../screens/Signup';
 import Welcome from './../screens/Welcome';
 import Service from '../screens/services/Service.js';
+import Reward from '../screens/Rewards/Reward.js';
+
 
 import EmployeesScreen from '../screens/Employees/EmployeesScreen.js';
 import { Ionicons } from '@expo/vector-icons';
@@ -39,22 +41,33 @@ const clientRoutes = [
         component: Welcome,
         options: {
             headerTintColor: primary
-        }
-    }, {
-        name: 'Profile',
-        component: Welcome,//cambiar 
-        options: {
-            headerTintColor: primary
-        }
-    }, {
+        },
+        icon: (focused) => <Ionicons name='home' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+    }, 
+    // {
+    //     name: 'Profile',
+    //     component: Welcome,//cambiar 
+    //     options: {
+    //         headerTintColor: primary
+    //     }
+    // }, 
+    {
         name: "Schedule an Appointment",
         component: Welcome,//cambiar
         options: { title: "Schedule an Appointment" },
+        icon: (focused) => <Ionicons name='add' size={24} color={focused ? '#6200ee' : '#757575'}/>,
     },
     {
-        name: "Rewards",
+        name: "My Appointments",
         component: Welcome,//cambiar
+        options: { title: "My Appointments" },
+        icon: (focused) => <Ionicons name='calendar-clear-outline' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+    },
+    {
+        name: "My Rewards",
+        component: Reward,//cambiar
         options: { title: "Rewards" },
+         icon: (focused) => <Ionicons name='gift-outline' size={24} color={focused ? '#6200ee' : '#757575'}/>,
     },
 ];
 
