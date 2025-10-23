@@ -11,7 +11,8 @@ import Reward from '../screens/Rewards/Reward.js';
 
 import EmployeesScreen from '../screens/Employees/EmployeesScreen.js';
 import { Ionicons } from '@expo/vector-icons';
-import ScheduleScreen from '../screens/Schedule/ScheduleScreen.js';
+//import ScheduleScreen from '../screens/Schedule/ScheduleScreen.js';//Daniel
+
 
 const screenOptions = {
     headerStyle: {
@@ -54,7 +55,7 @@ const clientRoutes = [
     // }, 
     {
         name: "Schedule an Appointment",
-        component: ScheduleScreen,//cambiar
+        component: Welcome,//cambiar
         options: { title: "Schedule an Appointment" },
         icon: (focused) => <Ionicons name='add' size={24} color={focused ? '#6200ee' : '#757575'}/>,
     },
@@ -122,7 +123,7 @@ const adminRoutes = [
     },
     {
         name: 'Rewards',
-        component: Welcome,//cambiar
+        component: Reward,//cambiar
         options: { title: 'Rewards' },
         icon: (focused) => <Ionicons name='gift' size={24} color={focused ? '#6200ee' : '#757575'} />,
     }
@@ -132,13 +133,14 @@ const employeeRoutes = [
     {
         name: 'Home',
         component: Welcome,
-        options: { title: 'Home' }
+        options: { title: 'Home' },
+        icon: (focused) => <Ionicons name='home' size={24} color={focused ? '#6200ee' : '#757575'}/>,
     },
-    {
-        name: 'Profile',
-        component: Welcome,//cambiar
-        options: { title: 'Profile' }
-    },
+    // {
+    //     name: 'Profile',
+    //     component: Welcome,//cambiar
+    //     options: { title: 'Profile' }
+    // },
     {
         name: 'My Schedule',
         component: Welcome,//cambiar
@@ -146,7 +148,7 @@ const employeeRoutes = [
     },
     {
         name: 'Rewards',
-        component: Welcome,//cambiar
+        component: Reward,//cambiar
         options: { title: 'Rewards' }
     }
 ];
