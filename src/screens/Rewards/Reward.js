@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Colors } from '../../assets/css/general/general';
 import { Ionicons } from '@expo/vector-icons';
-import { View, StyleSheet, Text, FlatList } from 'react-native';
+import { View, StyleSheet, Text, FlatList, ScrollView } from 'react-native';
 import RewardCard from '../../components/Rewards/RewardCard';
 import CollapsibleSection from '../../components/ui/CollapsibleSection';
 
@@ -26,11 +26,12 @@ const Reward = () => {
 
  
   return (
-    <View style={styles.mainView}>
+    <ScrollView style={styles.mainView}>
       <Text style={styles.subtitle}>
         Redeem your points for exclusive rewards
       </Text>
       <RewardCard reward={rewardPoints} colorTitle={brand}/>
+      <View style = {styles.horizontalRule}/>
       <CollapsibleSection title="Available Rewards">
         {rewardsMock.map((reward) => (
           <RewardCard
@@ -42,10 +43,11 @@ const Reward = () => {
           />
         ))}
       </CollapsibleSection>
+      <View style = {styles.horizontalRule}/>
       <CollapsibleSection title='My Rewards'>
         
       </CollapsibleSection>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -63,30 +65,12 @@ const styles = StyleSheet.create({
     color: subtitle,
     textAlign: 'center', // 👈 para centrar solo el texto
    },
-//   emptyText: {
-//     fontSize: 16,
-//     color: subtitle,
-//     marginTop: 40,
-//     textAlign: 'center',
-//   },
-//   footer: {
-//     alignItems: 'center',
-//     marginTop: 20,
-//     width: '100%',
-//   },
-//   divider: {
-//     width: 60,
-//     height: 2,
-//     backgroundColor: subtitle, // o cualquier color que quieras
-//     opacity: 0.3,
-//     borderRadius: 1,
-//     marginBottom: 12,
-//   },
-//   footerText: {
-//     fontSize: 14,
-//     color: subtitle,
-//     opacity: 0.6,
-//   },
+  horizontalRule: {
+  height: 2,
+  backgroundColor: brand,
+  opacity: 0.3,
+  marginVertical: 10,
+}
 });
 
 export default Reward;
