@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../../assets/css/general/general';
+
 const { subtitle } = Colors;
 
-const CollapsibleSection = ({ title, children }) => {
+const CollapsibleSection = ({ title, children, maxHeight = 300 }) => {
   const [expanded, setExpanded] = useState(false);
   const [animation] = useState(new Animated.Value(0));
 
@@ -13,13 +14,13 @@ const CollapsibleSection = ({ title, children }) => {
     if (expanded) {
       Animated.timing(animation, {
         toValue: 0,
-        duration: 200,
+        duration: 250,
         useNativeDriver: false,
       }).start();
     } else {
       Animated.timing(animation, {
         toValue: 1,
-        duration: 200,
+        duration: 250,
         useNativeDriver: false,
       }).start();
     }
@@ -28,7 +29,7 @@ const CollapsibleSection = ({ title, children }) => {
 
   const animatedHeight = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 400], // 👈 Ajusta este valor si tus cards son más altos
+    outputRange: [0, maxHeight], // 👈 Altura fija máxima
   });
 
   return (
@@ -43,9 +44,13 @@ const CollapsibleSection = ({ title, children }) => {
       </TouchableOpacity>
 
       <Animated.View style={[styles.content, { height: animatedHeight }]}>
-        <ScrollView>
-
-            <View style={{ padding: 10 }}>{children}</View>
+        {/* 👇 ScrollView interno con altura fija */}
+        <ScrollView
+          nestedScrollEnabled={true} // 👈 Clave para Android
+          style={{ flex: 1 }}
+          showsVerticalScrollIndicator={true}
+        >
+          <View style={{ padding: 10 }}>{children}</View>
         </ScrollView>
       </Animated.View>
     </View>
@@ -70,7 +75,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
-    marginBottom: 16
   },
   title: {
     fontSize: 18,

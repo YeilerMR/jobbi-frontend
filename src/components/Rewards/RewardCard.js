@@ -4,29 +4,48 @@ import { Ionicons } from '@expo/vector-icons';
 import InfoRow from '../ui/InfoRow';
 import { Colors } from '../../assets/css/general/general';
 
-const { primary, brand, green, badgeEnable,  } = Colors;
+const { primary, brand, green, badgeEnable } = Colors;
 
-const RewardCard = ({ reward, iconName, isButton = false, discount, colorTitle = '#000'}) => {
+const RewardCard = ({ reward, iconName, isButton = false, discount, colorTitle = '#000', onClick }) => {
   return (
     <View style={styles.mainView}>
       <View style={styles.contentView}>
         <Ionicons name={iconName} size={24} color={brand} />
         <View style={styles.rowView}>
-          <Text style={[styles.textCard, {color:colorTitle}]}>{reward.name}</Text>
+          <Text style={[styles.textCard, { color: colorTitle }]}>{reward.name}</Text>
 
-          {/* 👇 Solo muestra la fila de descuento si `discount` está definido */}
+          {reward.description ? (
+            <InfoRow iconName="information-circle-outline" text={reward.description} />
+          ) : (
+            <>
+              {discount !== undefined && discount !== null && (
+                <InfoRow text={`${discount}% discount on your next service.`} />
+              )}
+              {reward.points !== undefined && reward.points !== null && (
+                <InfoRow iconName="sparkles-outline" text={reward.points} />
+              )}
+            </>
+          )}
+
           {discount !== undefined && discount !== null && (
             <InfoRow text={`${discount}% discount on your next service.`} />
           )}
 
-          {/* 👇 Siempre muestra los puntos (asumiendo que siempre vienen en reward.points) */}
-          <InfoRow iconName="sparkles-outline" text={reward.points} />
+          {/* {reward.points !== undefined && reward.points !== null && (
+            <InfoRow iconName="sparkles-outline" text={reward.points} />
+          )} */}
         </View>
       </View>
 
       {/* 👇 Solo muestra el botón si `isButton` es true */}
       {isButton && (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          onPress={() => {
+            console.log('Boton interno');
+            onClick(reward);
+          }}
+          style={styles.button}
+        >
           <Text style={styles.buttonText}>Redeem</Text>
         </TouchableOpacity>
       )}
