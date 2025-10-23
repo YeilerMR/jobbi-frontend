@@ -9,6 +9,7 @@ import Service from '../screens/services/Service.js';
 
 import EmployeesScreen from '../screens/Employees/EmployeesScreen.js';
 import { Ionicons } from '@expo/vector-icons';
+import ScheduleScreen from '../screens/Schedule/ScheduleScreen.js';
 
 const screenOptions = {
     headerStyle: {
@@ -48,7 +49,7 @@ const clientRoutes = [
         }
     }, {
         name: "Schedule an Appointment",
-        component: Welcome,//cambiar
+        component: ScheduleScreen,//cambiar
         options: { title: "Schedule an Appointment" },
     },
     {
