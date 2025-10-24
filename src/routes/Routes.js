@@ -63,9 +63,9 @@ const clientRoutes = [
 const adminRoutes = [
     {
         name: 'Home',
-        component: Welcome, 
-        options:{headerTintColor: primary},
-        icon: (focused) => <Ionicons name='home' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+        component: Welcome,
+        options: { headerTintColor: primary },
+        icon: (focused) => <Ionicons name='home' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     // {
     //     name: 'Profile',
@@ -74,45 +74,45 @@ const adminRoutes = [
     // },
     {
         name: 'Business',
-        component: Business, 
-        options:{title: 'Business'},
-        icon: (focused) => <Ionicons name='business' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+        component: Business,
+        options: { title: 'Business' },
+        icon: (focused) => <Ionicons name='business' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
         name: 'Branches',
-        component: BranchesScreen, 
-        options:{title: 'Branches'},
-        icon: (focused) => <Ionicons name='location' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+        component: BranchesScreen,
+        options: { title: 'Branches' },
+        icon: (focused) => <Ionicons name='location' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
         name: 'Employees',
         component: EmployeesScreen,
-        options:{title: 'Employees'},
-        icon: (focused) => <Ionicons name='people-circle' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+        options: { title: 'Employees' },
+        icon: (focused) => <Ionicons name='people-circle' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
         name: 'Services',
         component: Service,//cambiar
-        options:{title: 'Services'},
-         icon: (focused) => <Ionicons name='ribbon' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+        options: { title: 'Services' },
+        icon: (focused) => <Ionicons name='ribbon' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
         name: 'Schedule',
         component: Welcome,//cambiar
-        options:{title: 'Schedule'},
-         icon: (focused) => <Ionicons name='calendar' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+        options: { title: 'Schedule' },
+        icon: (focused) => <Ionicons name='calendar' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
         name: 'Subscriptions',
         component: Welcome,//cambiar
-        options:{title: 'Subscriptions'},
-         icon: (focused) => <Ionicons name='card' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+        options: { title: 'Subscriptions' },
+        icon: (focused) => <Ionicons name='card' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
         name: 'Rewards',
         component: Welcome,//cambiar
-        options:{title: 'Rewards'},
-         icon: (focused) => <Ionicons name='gift' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+        options: { title: 'Rewards' },
+        icon: (focused) => <Ionicons name='gift' size={24} color={focused ? '#6200ee' : '#757575'} />,
     }
 ];
 
