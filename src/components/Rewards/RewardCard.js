@@ -6,7 +6,7 @@ import { Colors } from '../../assets/css/general/general';
 
 const { primary, brand, green, badgeEnable } = Colors;
 
-const RewardCard = ({ reward, iconName, isButton = false, discount, colorTitle = '#000', onClick }) => {
+const RewardCard = ({ reward, iconName, isButton = false, isDisabled, discount, colorTitle = '#000', onClick }) => {
   return (
     <View style={styles.mainView}>
       <View style={styles.contentView}>
@@ -14,26 +14,16 @@ const RewardCard = ({ reward, iconName, isButton = false, discount, colorTitle =
         <View style={styles.rowView}>
           <Text style={[styles.textCard, { color: colorTitle }]}>{reward.name}</Text>
 
-          {reward.description ? (
-            <InfoRow iconName="information-circle-outline" text={reward.description} />
-          ) : (
-            <>
-              {discount !== undefined && discount !== null && (
-                <InfoRow text={`${discount}% discount on your next service.`} />
-              )}
-              {reward.points !== undefined && reward.points !== null && (
-                <InfoRow iconName="sparkles-outline" text={reward.points} />
-              )}
-            </>
-          )}
+          {/* Siempre mostrar descripción si existe */}
+          {reward.description && <InfoRow iconName="information-circle-outline" text={reward.description} />}
 
-          {discount !== undefined && discount !== null && (
+          {/* Siempre mostrar puntos si existe */}
+          {reward.points && <InfoRow iconName="sparkles-outline" text={reward.points} />}
+
+          {/* Mostrar discount solo si no hay description ni points (retrocompatibilidad) */}
+          {discount !== undefined && discount !== null && !reward.description && !reward.points && (
             <InfoRow text={`${discount}% discount on your next service.`} />
           )}
-
-          {/* {reward.points !== undefined && reward.points !== null && (
-            <InfoRow iconName="sparkles-outline" text={reward.points} />
-          )} */}
         </View>
       </View>
 
@@ -41,12 +31,16 @@ const RewardCard = ({ reward, iconName, isButton = false, discount, colorTitle =
       {isButton && (
         <TouchableOpacity
           onPress={() => {
-            console.log('Boton interno');
-            onClick(reward);
+            if (!isDisabled) {
+              onClick(reward);
+            }
           }}
-          style={styles.button}
+          disabled={isDisabled}
+          style={[styles.button, isDisabled && styles.buttonDisabled]}
         >
-          <Text style={styles.buttonText}>Redeem</Text>
+          <Text style={[styles.buttonText, isDisabled && styles.buttonDisabledText]}>
+            {isDisabled ? 'Insufficient Points' : 'Redeem'}
+          </Text>
         </TouchableOpacity>
       )}
     </View>
@@ -89,6 +83,14 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: badgeEnable,
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  buttonDisabled: {
+    backgroundColor: '#ccc', // gris desactivado
+  },
+  buttonDisabledText: {
+    color: brand,
     fontWeight: '600',
     fontSize: 14,
   },

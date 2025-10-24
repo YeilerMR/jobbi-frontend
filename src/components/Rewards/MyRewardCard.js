@@ -7,9 +7,9 @@ import { Colors } from '../../assets/css/general/general';
 const { brand, green, badgeEnable } = Colors;
 
 const MyRewardCard = ({ reward, onUse }) => {
-  // reward debe tener: name, date, state (true = active, false = used)
-  const statusText = reward.state ? 'Active' : 'Used';
-  const statusColor = reward.state ? green : '#999';
+  // reward debe tener: name, redeemedDate, isRedeemed (false = active, true = used)
+  const statusText = reward.isRedeemed ? 'Used' : 'Active';
+  const statusColor = !reward.isRedeemed ? green : '#999';
 
   return (
     <View style={styles.mainView}>
@@ -17,14 +17,14 @@ const MyRewardCard = ({ reward, onUse }) => {
         <Ionicons name="ticket-outline" size={24} color={brand} />
         <View style={styles.rowView}>
           <Text style={styles.textCard}>{reward.name}</Text>
-          <Text style={styles.dateText}>Valid until: {reward.date}</Text>
+          <Text style={styles.dateText}>Redeemed on: {reward.redeemedDate}</Text>
           <Text style={[styles.statusText, { color: statusColor }]}>
             Status: {statusText}
           </Text>
         </View>
       </View>
 
-      {reward.state && (
+      {!reward.isRedeemed && (
         <TouchableOpacity onPress={() => onUse(reward)} style={styles.button}>
           <Text style={styles.buttonText}>Use Now</Text>
         </TouchableOpacity>
