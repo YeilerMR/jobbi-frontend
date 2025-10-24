@@ -114,8 +114,23 @@ const ScheduleScreen = () => {
         return 'Confirm your appointment';
     };
 
-    const confirmAppointment = () => {
-        alert(`Confirmed appointment`);
+    const confirmAppointment = async () => {
+        try {
+            const res = await createAppointment({
+                "id_branch": selectedBranch?.id_branch,
+                "id_employee": selectedEmployee?.id,
+                "id_service": 2,
+                "appointment_date": selectedDate,
+                "appointment_time": selectedHour
+            });
+            if (res) {
+                alert(`Confirmed appointment`);
+            } else {
+                alert(`Error confirming appointment`);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     // (today → 2 months)

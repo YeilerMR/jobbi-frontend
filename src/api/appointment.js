@@ -32,3 +32,17 @@ export const completeApointment = async (id) => {
         throw error;
     }
 }
+
+export const createAppointment = async (appointmentData) => {
+    const token = await getAuthToken();
+    try {
+        const res = await axios.post(`/appointments`, appointmentData, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+};
