@@ -181,7 +181,7 @@ const ScheduleScreen = () => {
                     renderItem={({ item }) => (
                         <TouchableOpacity style={styles.item} onPress={() => handleSelectBranch(item)}>
                             <Text style={styles.itemText}>{item.name}</Text>
-                            <Text style={styles.itemText}>{item.service_name ?? 'N/A'}</Text>
+                            <Text size={14} color="#555">{item.service_name ?? 'N/A'}</Text>
                             <View style={styles.iconRow}>
                                 <Ionicons name="location-outline" size={18} color="#555" style={{ marginRight: 6 }} />
                                 <Text style={styles.subText}>{item.location}</Text>
