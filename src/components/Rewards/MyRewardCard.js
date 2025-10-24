@@ -8,8 +8,8 @@ const { brand, green, badgeEnable } = Colors;
 
 const MyRewardCard = ({ reward, onUse }) => {
   // reward debe tener: name, redeemedDate, isRedeemed (false = active, true = used)
-  const statusText = reward.isRedeemed ? 'Used' : 'Active';
-  const statusColor = !reward.isRedeemed ? green : '#999';
+  const statusText = reward.isActive ? 'Used' : 'Active';
+  const statusColor = !reward.isActive ? green : '#999';
 
   return (
     <View style={styles.mainView}>
@@ -24,7 +24,7 @@ const MyRewardCard = ({ reward, onUse }) => {
         </View>
       </View>
 
-      {!reward.isRedeemed && (
+      {!reward.isActive && (
         <TouchableOpacity onPress={() => onUse(reward)} style={styles.button}>
           <Text style={styles.buttonText}>Use Now</Text>
         </TouchableOpacity>
