@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from "react-native";
 import {
   User,
@@ -15,6 +16,7 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react-native";
+import { cancelApointment, completeApointment } from "../../api/appointment";
 
 const mockFetchEmployees = async (date) => {
   return [
@@ -42,6 +44,33 @@ const EmployeeScheduleScreen = () => {
     };
     load();
   }, []);
+
+  async function handleCancel(id) {
+    try {
+      const res = await cancelApointment(id);
+      Alert.alert("Success", "The appointment was successfully cancelled.");
+
+      setAppointments((prev) => prev.filter((item) => item.id !== id));
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "The appointment could not be cancelled.");
+    }
+  }
+
+  async function handleComplete(id) {
+    try {
+      const res = await completeApointment(id);
+      Alert.alert("Éxito", "La cita fue completada correctamente.");
+      setAppointments((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, status: "Completada" } : item
+        )
+      );
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "No se pudo completar la cita.");
+    }
+  }
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
@@ -85,13 +114,20 @@ const EmployeeScheduleScreen = () => {
       </View>
 
       <View style={styles.actionRow}>
-        <TouchableOpacity style={styles.completeButton}>
+        <TouchableOpacity
+          style={styles.completeButton}
+          onPress={() => handleComplete(item.id)}
+        >
           <CheckCircle size={18} color="#fff" />
-          <Text style={styles.completeText}>Complete</Text>
+          <Text style={styles.completeText}>Completar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.cancelButton}>
+
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => handleCancel(item.id)}
+        >
           <XCircle size={18} color="#000" />
-          <Text style={styles.cancelText}>Cencel</Text>
+          <Text style={styles.cancelText}>Cancelar</Text>
         </TouchableOpacity>
       </View>
     </View>

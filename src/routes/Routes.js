@@ -145,7 +145,8 @@ const employeeRoutes = [
     {
         name: 'My Schedule',
         component: EmployeeScheduleScreen,//cambiar
-        options: { title: 'My Schedule' }
+        options: { title: 'My Schedule' },
+        icon: (focused) => <Ionicons name='add' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
         name: 'Rewards',
