@@ -6,11 +6,14 @@ import Login from './../screens/Login';
 import Signup from './../screens/Signup';
 import Welcome from './../screens/Welcome';
 import Service from '../screens/services/Service.js';
+import Reward from '../screens/Rewards/Reward.js';
+
 
 import EmployeesScreen from '../screens/Employees/EmployeesScreen.js';
 import { Ionicons } from '@expo/vector-icons';
 import ScheduleScreen from '../screens/Schedule/ScheduleScreen.js';
 import EmployeeScheduleScreen from '../screens/Schedule/EmployeeScheduleScreen.js';
+
 
 const screenOptions = {
     headerStyle: {
@@ -41,22 +44,33 @@ const clientRoutes = [
         component: Welcome,
         options: {
             headerTintColor: primary
-        }
-    }, {
-        name: 'Profile',
-        component: Welcome,//cambiar 
-        options: {
-            headerTintColor: primary
-        }
-    }, {
+        },
+        icon: (focused) => <Ionicons name='home' size={24} color={focused ? '#6200ee' : '#757575'} />,
+    },
+    // {
+    //     name: 'Profile',
+    //     component: Welcome,//cambiar 
+    //     options: {
+    //         headerTintColor: primary
+    //     }
+    // }, 
+    {
         name: "Schedule an Appointment",
-        component: ScheduleScreen,//cambiar
+        component: Welcome,//cambiar
         options: { title: "Schedule an Appointment" },
+        icon: (focused) => <Ionicons name='add' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
-        name: "Rewards",
+        name: "My Appointments",
         component: Welcome,//cambiar
+        options: { title: "My Appointments" },
+        icon: (focused) => <Ionicons name='calendar-clear-outline' size={24} color={focused ? '#6200ee' : '#757575'} />,
+    },
+    {
+        name: "My Rewards",
+        component: Reward,//cambiar
         options: { title: "Rewards" },
+        icon: (focused) => <Ionicons name='gift-outline' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
 ];
 
@@ -98,7 +112,7 @@ const adminRoutes = [
     },
     {
         name: 'Schedule',
-        component: Welcome,//cambiar
+        component: ScheduleScreen,//cambiar
         options: { title: 'Schedule' },
         icon: (focused) => <Ionicons name='calendar' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
@@ -110,7 +124,7 @@ const adminRoutes = [
     },
     {
         name: 'Rewards',
-        component: Welcome,//cambiar
+        component: Reward,//cambiar
         options: { title: 'Rewards' },
         icon: (focused) => <Ionicons name='gift' size={24} color={focused ? '#6200ee' : '#757575'} />,
     }
@@ -120,13 +134,14 @@ const employeeRoutes = [
     {
         name: 'Home',
         component: Welcome,
-        options: { title: 'Home' }
+        options: { title: 'Home' },
+        icon: (focused) => <Ionicons name='home' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
-    {
-        name: 'Profile',
-        component: Welcome,//cambiar
-        options: { title: 'Profile' }
-    },
+    // {
+    //     name: 'Profile',
+    //     component: Welcome,//cambiar
+    //     options: { title: 'Profile' }
+    // },
     {
         name: 'My Schedule',
         component: EmployeeScheduleScreen,//cambiar
@@ -134,7 +149,7 @@ const employeeRoutes = [
     },
     {
         name: 'Rewards',
-        component: Welcome,//cambiar
+        component: Reward,//cambiar
         options: { title: 'Rewards' }
     }
 ];

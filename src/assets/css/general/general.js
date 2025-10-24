@@ -13,4 +13,5 @@ export const Colors = {
     badgeDisable: '#f8d7da',
     textBadgeE: '#155724',
     textBadgeD: '#721c24',
+    subtitle: '#333',
 };
