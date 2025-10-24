@@ -91,3 +91,18 @@ export const deleteBranch = async (id) => {
         throw error;
     }
 };
+
+export const getAllBranches = async () => {
+    const token = await getAuthToken();
+
+    try {
+        const res = await axios.get(`/branches/all`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+}

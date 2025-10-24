@@ -11,7 +11,9 @@ import Reward from '../screens/Rewards/Reward.js';
 
 import EmployeesScreen from '../screens/Employees/EmployeesScreen.js';
 import { Ionicons } from '@expo/vector-icons';
-//import ScheduleScreen from '../screens/Schedule/ScheduleScreen.js';//Daniel
+import ScheduleScreen from '../screens/Schedule/ScheduleScreen.js';
+import EmployeeScheduleScreen from '../screens/Schedule/EmployeeScheduleScreen.js';
+import ClientScheduleScreen from '../screens/Schedule/ClientScheduleScreen.js';
 
 
 const screenOptions = {
@@ -44,8 +46,8 @@ const clientRoutes = [
         options: {
             headerTintColor: primary
         },
-        icon: (focused) => <Ionicons name='home' size={24} color={focused ? '#6200ee' : '#757575'}/>,
-    }, 
+        icon: (focused) => <Ionicons name='home' size={24} color={focused ? '#6200ee' : '#757575'} />,
+    },
     // {
     //     name: 'Profile',
     //     component: Welcome,//cambiar 
@@ -54,22 +56,22 @@ const clientRoutes = [
     //     }
     // }, 
     {
-        name: "Schedule an Appointment",
-        component: Welcome,//cambiar
-        options: { title: "Schedule an Appointment" },
-        icon: (focused) => <Ionicons name='add' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+        name: 'Schedule',
+        component: ScheduleScreen,//cambiar
+        options: { title: 'Schedule' },
+        icon: (focused) => <Ionicons name='calendar' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
         name: "My Appointments",
-        component: Welcome,//cambiar
+        component: ClientScheduleScreen,//cambiar
         options: { title: "My Appointments" },
-        icon: (focused) => <Ionicons name='calendar-clear-outline' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+        icon: (focused) => <Ionicons name='calendar-clear-outline' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
         name: "My Rewards",
         component: Reward,//cambiar
         options: { title: "Rewards" },
-         icon: (focused) => <Ionicons name='gift-outline' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+        icon: (focused) => <Ionicons name='gift-outline' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
 ];
 
@@ -110,12 +112,6 @@ const adminRoutes = [
         icon: (focused) => <Ionicons name='ribbon' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
-        name: 'Schedule',
-        component: Welcome,//cambiar
-        options: { title: 'Schedule' },
-        icon: (focused) => <Ionicons name='calendar' size={24} color={focused ? '#6200ee' : '#757575'} />,
-    },
-    {
         name: 'Subscriptions',
         component: Welcome,//cambiar
         options: { title: 'Subscriptions' },
@@ -134,7 +130,7 @@ const employeeRoutes = [
         name: 'Home',
         component: Welcome,
         options: { title: 'Home' },
-        icon: (focused) => <Ionicons name='home' size={24} color={focused ? '#6200ee' : '#757575'}/>,
+        icon: (focused) => <Ionicons name='home' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     // {
     //     name: 'Profile',
@@ -143,8 +139,9 @@ const employeeRoutes = [
     // },
     {
         name: 'My Schedule',
-        component: Welcome,//cambiar
-        options: { title: 'My Schedule' }
+        component: EmployeeScheduleScreen,//cambiar
+        options: { title: 'My Schedule' },
+        icon: (focused) => <Ionicons name='add' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
         name: 'Rewards',

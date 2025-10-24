@@ -14,10 +14,11 @@ import Input from "../ui/Input";
 import { darkLight } from "../../assets/css/general/general";
 import useLogin from "../../hooks/auth/login";
 import { useUser } from "../../hooks/UserContext";
+import { Alert } from "react-native";
 
 const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
   
-  const { data, error, setError, loginPost } = useLogin();
+  const { data, error, setError, loginPost, loading } = useLogin();
   const {setUserRole} = useUser();
   return (
     <Formik
@@ -39,6 +40,8 @@ const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
           } else{
             setError('User rol Not found')
           }
+        } else {
+          Alert.alert("Error", "Email or password incorrect.");
         }
       }}
     >
@@ -73,7 +76,7 @@ const AuthForm = ({ navigation, hidePassword, setHidePassword }) => {
           <MsBox>{error}</MsBox>
 
           <StyledButton onPress={handleSubmit}>
-            <ButtonText>Login</ButtonText>
+            <ButtonText>{loading? "Loading..." : "Login"}</ButtonText>
           </StyledButton>
 
           <Line />
