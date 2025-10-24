@@ -11,17 +11,9 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { getAllBranches } from '../../api/branches';
+import { searchSpecialties } from '../../api/services';
 import { getEmployeesByBranch } from '../../api/employees';
 import { Ionicons } from '@expo/vector-icons';
-
-const mockFetchBranches = async (service) => {
-    await new Promise((r) => setTimeout(r, 600));
-    return [
-        { id: 'b1', name: 'Sucursal San José' },
-        { id: 'b2', name: 'Sucursal Heredia' },
-        { id: 'b3', name: 'Sucursal Cartago' },
-    ].filter((b) => b.name.toLowerCase().includes(service.toLowerCase()));
-};
 
 const mockFetchHours = async (date) => {
     await new Promise((r) => setTimeout(r, 500));
@@ -48,10 +40,12 @@ const ScheduleScreen = () => {
             try {
                 if (service.length < 1) {
                     const res = await getAllBranches();
+                    setBranches([]);
                     setBranches(res.data);
                 } else {
-                    const res = await mockFetchBranches(service);
-                    setBranches(res);
+                    const res = await searchSpecialties(service);
+                    setBranches([]);
+                    setBranches(res.data);
                 }
             } finally {
                 setLoading(false);
@@ -189,7 +183,7 @@ const ScheduleScreen = () => {
             {!loading && branches.length > 0 && !selectedBranch && (
                 <FlatList
                     data={branches}
-                    keyExtractor={(item) => item.id_branch}
+                    keyExtractor={(item, index) => `${item.id_branch}-${index}`}
                     renderItem={({ item }) => (
                         <TouchableOpacity style={styles.item} onPress={() => handleSelectBranch(item)}>
                             <Text style={styles.itemText}>{item.name}</Text>
@@ -214,7 +208,7 @@ const ScheduleScreen = () => {
             {selectedBranch && employees.length > 0 && !selectedEmployee && (
                 <FlatList
                     data={employees}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item, index) => `${item.id}-${index}`}
                     renderItem={({ item }) => (
                         <TouchableOpacity style={styles.item} onPress={() => handleSelectEmployee(item)}>
                             <Text style={styles.itemText}>{item.name}</Text>
