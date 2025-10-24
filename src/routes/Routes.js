@@ -13,6 +13,7 @@ import EmployeesScreen from '../screens/Employees/EmployeesScreen.js';
 import { Ionicons } from '@expo/vector-icons';
 import ScheduleScreen from '../screens/Schedule/ScheduleScreen.js';
 import EmployeeScheduleScreen from '../screens/Schedule/EmployeeScheduleScreen.js';
+import ClientScheduleScreen from '../screens/Schedule/ClientScheduleScreen.js';
 
 
 const screenOptions = {
@@ -55,14 +56,14 @@ const clientRoutes = [
     //     }
     // }, 
     {
-        name: "Schedule an Appointment",
-        component: Welcome,//cambiar
-        options: { title: "Schedule an Appointment" },
-        icon: (focused) => <Ionicons name='add' size={24} color={focused ? '#6200ee' : '#757575'} />,
+        name: 'Schedule',
+        component: ScheduleScreen,//cambiar
+        options: { title: 'Schedule' },
+        icon: (focused) => <Ionicons name='calendar' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
         name: "My Appointments",
-        component: Welcome,//cambiar
+        component: ClientScheduleScreen,//cambiar
         options: { title: "My Appointments" },
         icon: (focused) => <Ionicons name='calendar-clear-outline' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
@@ -109,12 +110,6 @@ const adminRoutes = [
         component: Service,//cambiar
         options: { title: 'Services' },
         icon: (focused) => <Ionicons name='ribbon' size={24} color={focused ? '#6200ee' : '#757575'} />,
-    },
-    {
-        name: 'Schedule',
-        component: ScheduleScreen,//cambiar
-        options: { title: 'Schedule' },
-        icon: (focused) => <Ionicons name='calendar' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
     {
         name: 'Subscriptions',
