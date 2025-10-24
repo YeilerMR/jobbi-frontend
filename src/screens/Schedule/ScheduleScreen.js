@@ -38,15 +38,9 @@ const ScheduleScreen = () => {
         const fetchBranches = async () => {
             setLoading(true);
             try {
-                if (service.length < 1) {
-                    const res = await getAllBranches();
-                    setBranches([]);
-                    setBranches(res.data);
-                } else {
-                    const res = await searchSpecialties(service);
-                    setBranches([]);
-                    setBranches(res.data);
-                }
+                const res = await searchSpecialties(service);
+                setBranches([]);
+                setBranches(res.data);
             } finally {
                 setLoading(false);
             }
@@ -187,6 +181,7 @@ const ScheduleScreen = () => {
                     renderItem={({ item }) => (
                         <TouchableOpacity style={styles.item} onPress={() => handleSelectBranch(item)}>
                             <Text style={styles.itemText}>{item.name}</Text>
+                            <Text style={styles.itemText}>{item.service_name ?? 'N/A'}</Text>
                             <View style={styles.iconRow}>
                                 <Ionicons name="location-outline" size={18} color="#555" style={{ marginRight: 6 }} />
                                 <Text style={styles.subText}>{item.location}</Text>
