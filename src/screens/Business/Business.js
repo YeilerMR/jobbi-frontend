@@ -4,11 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { getMyBusinesses, updateBusiness, createBusiness, deleteBusiness } from '../../api/businesses';
 import InfoRow from '../../components/ui/InfoRow';
-//import ButtonCustome from '../../components/ui/ButtonCustome';
 import CustomButton from '../../components/ui/ButtonCustome';
 import { Colors } from '../../assets/css/general/general';
 import BusinessModal from '../../components/business/BusinessModal';
-//import { Button } from 'react-native/types_generated/index';
 
 const { btnEdit, btnDisable, badgeEnable, badgeDisable, textBadgeE, textBadgeD, green } = Colors;
 
@@ -29,7 +27,6 @@ const Business = () => {
         setBusinesses(res.data);
       }
     } catch (error) {
-      //Alert.alert('Error', 'Failed to load businesses');
     }
   };
 
@@ -44,7 +41,7 @@ const Business = () => {
       }
       fetchBusinesses();
     } catch (error) {
-      //Alert.alert('Error', error.message || 'Operation failed');
+
     }
   };
 

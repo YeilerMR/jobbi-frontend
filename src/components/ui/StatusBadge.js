@@ -1,4 +1,3 @@
-// src/components/ui/StatusBadge.js
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Colors } from '../../assets/css/general/general';

@@ -1,4 +1,3 @@
-// Service.js - VERSIÓN COMPLETA
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet, Modal } from 'react-native';
 import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
@@ -27,7 +26,6 @@ const Service = () => {
   const isFocused = useIsFocused();
   const route = useRoute();
   const branchId = route?.params?.branchId ?? null;
-  // Referencia para trackear si venimos de Branches
   const cameFromBranchesRef = useRef(false);
 
   const [services, setServices] = useState([]);
@@ -38,21 +36,12 @@ const Service = () => {
   const [editingService, setEditingService] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Efecto principal para cargar servicios
   useEffect(() => {
     fetchServicesBasedOnMode();
   }, [branchId])
-  // useEffect(() => {
 
-  //   if (isFocused) {
-  //     fetchServicesBasedOnMode();
-  //   }
-  // }, [isFocused, serviceViewMode.mode, serviceViewMode.branchId]);
-
-  // Efecto para detectar navegación desde Branches vs Drawer
   useFocusEffect(
     useCallback(() => {
-      // Cuando la pantalla gana foco, verificar si venimos de Branches
       const navigationState = navigation.getState();
       const currentRoute = navigationState.routes[navigationState.index]?.name;
       const previousRoute = navigationState.routes[navigationState.index - 1]?.name;
@@ -60,17 +49,13 @@ const Service = () => {
 
 
       if (previousRoute === 'Branches') {
-        // Venimos de Branches - NO resetear
         cameFromBranchesRef.current = true;
 
       } else if (previousRoute && previousRoute !== 'Branches') {
-        // Venimos de otra pantalla (probablemente drawer) - RESETEAR
         cameFromBranchesRef.current = false;
 
         resetToAllMode();
       }
-
-      // Si no hay ruta anterior (app recién iniciada), también resetear
       if (!previousRoute) {
 
         resetToAllMode();
@@ -149,7 +134,6 @@ const Service = () => {
         await updateService(editingService.id_service, serviceData);
         Alert.alert('Success', 'Service Updated!');
       } else {
-        console.log("Service: ",serviceData);
         await createService(serviceData);
         Alert.alert('Success', 'Service Created!');
       }

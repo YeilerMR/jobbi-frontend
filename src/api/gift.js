@@ -2,7 +2,6 @@ import { getAuthToken } from "../utils/Token";
 import axios from "./axios";
 
 export const getPoints = async ()=>{
-    //console.log('Puntos del usuario');
 
     const token = await getAuthToken();
     console.log('User Token: ', token);
@@ -48,7 +47,6 @@ export const getMyRewards = async ()=>{
 }
 
 export const redeemReward = async (rewardId)=>{
-    console.log('id reward: ', rewardId);
     
     const token = await getAuthToken();
     try {

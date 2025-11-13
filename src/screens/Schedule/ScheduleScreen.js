@@ -129,11 +129,9 @@ const ScheduleScreen = () => {
                 alert(`Error confirming appointment`);
             }
         } catch (error) {
-            console.log(error);
         }
     };
 
-    // (today → 2 months)
     const today = new Date();
     const maxDate = new Date();
     maxDate.setMonth(today.getMonth() + 2);

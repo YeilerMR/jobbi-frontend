@@ -52,7 +52,6 @@ const EmployeeScheduleScreen = () => {
 
       setAppointments((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
-      console.log(error);
       Alert.alert("Error", "The appointment could not be cancelled.");
     }
   }
@@ -67,7 +66,6 @@ const EmployeeScheduleScreen = () => {
         )
       );
     } catch (error) {
-      console.log(error);
       Alert.alert("Error", "No se pudo completar la cita.");
     }
   }

@@ -60,9 +60,7 @@ const Reward = () => {
     };
     fetchData();
   }, []);
-  //const userRole = 1;
 
-  // const renderRewards = ({ item }) => <RewardCard reward={item} iconName="star-outline" />;
   const handleUseReward = (reward) => {
     Alert.alert('Use Reward', `¿Usar ahora: ${reward.name}?`, [
       { text: 'Cancelar', style: 'cancel' },
@@ -71,7 +69,6 @@ const Reward = () => {
   };
 
   const handleRedeem = (reward) => {
-    console.log('Redimiendo recompensa:', reward.name);
     Alert.alert('Validate Reward', `¿Estás seguro que quieres redimir: ${reward.name}?`, [
       {
         text: 'Cancelar',

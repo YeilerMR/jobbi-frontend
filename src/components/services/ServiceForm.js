@@ -1,11 +1,10 @@
-// src/components/services/ServiceForm.js
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Alert, StyleSheet } from 'react-native';
 import CustomButton from '../ui/ButtonCustome';
 import SpecialtySelector from '../ui/SpecialtySelector';
 
 const ServiceForm = ({ 
-  service = null, // null = modo crear, objeto = modo editar
+  service = null,
   specialties = [],
   onSubmit,
   onCancel,
@@ -18,7 +17,6 @@ const ServiceForm = ({
   const [description, setDescription] = useState('');
   const [idSpecialty, setIdSpecialty] = useState(null);
 
-  // Si se pasa un servicio, inicializa los campos
   useEffect(() => {
     if (service) {
       setName(service.name || '');
@@ -27,7 +25,6 @@ const ServiceForm = ({
       setDescription(service.description || '');
       setIdSpecialty(service.id_specialty || null);
     } else {
-      // Modo crear: resetear campos
       setName('');
       setPrice('');
       setDuration('');
@@ -37,7 +34,6 @@ const ServiceForm = ({
   }, [service]);
 
   const handleSubmit = () => {
-    // Validación básica
     if (!name.trim()) {
       Alert.alert('Error', 'Name is required');
       return;

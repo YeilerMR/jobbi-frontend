@@ -2,8 +2,6 @@ import styled from "styled-components";
 import Constants from 'expo-constants';
 import { Colors } from '../general/general.js';
 
-//Colores
-
 const StatusBarHeight = Constants.statusBarHeight;
 
 

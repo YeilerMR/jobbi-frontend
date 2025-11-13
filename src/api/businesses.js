@@ -17,7 +17,6 @@ export const createBusiness = async (business) => {
 
 export const getMyBusinesses = async () => {
     const token = await getAuthToken();
-    console.log('token para admin:',token);
     
     try {
         const res = await axios.get(`/business`, {
@@ -37,7 +36,6 @@ export const getBusinessById = async (id) => {
 
 export const updateBusiness = async (id, business) => { 
     const token = await getAuthToken();
-    console.log('Info Form to update',business);
     try {
         const res = await axios.put(`/business/${id}`, business, {
             headers: {

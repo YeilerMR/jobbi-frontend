@@ -11,9 +11,7 @@ import { Avatar } from '../assets/css/auth/auth';
 import { Ionicons } from '@expo/vector-icons';
 import useLogout from '../hooks/auth/logout';
 
-// Componente personalizado para cada ítem del drawer
 const CustomDrawerItem = ({ route, focused, onPress }) => {
-  // Busca la ruta en las rutas disponibles para obtener su ícono
   const routeConfig = [...adminRoutes, ...clientRoutes, ...employeeRoutes].find(
     (r) => r.name === route.name
   );
@@ -98,14 +96,14 @@ const PrivateDrawer = () => {
       initialRouteName="Home"
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
-        drawerActiveBackgroundColor: '#e0e0e0', // fondo cuando está activo
+        drawerActiveBackgroundColor: '#e0e0e0',
         drawerInactiveBackgroundColor: 'transparent',
         drawerLabelStyle: {
           marginLeft: 16,
           fontSize: 16,
         },
         drawerStyle: {
-          backgroundColor: '#ffffff', // color de fondo del drawer
+          backgroundColor: '#ffffff',
           width: 280,
         },
       }}
@@ -135,7 +133,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   drawerItemsContainer: {
-    marginTop: 80, // espacio para el avatar
+    marginTop: 80,
     paddingHorizontal: 10,
   },
   drawerItem: {

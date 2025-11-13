@@ -14,14 +14,13 @@ const BranchesModal = ({
   visible,
   onClose,
   onSave,
-  branch = null // null = crear, objeto = editars
+  branch = nullW
 }) => {
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
 
-  // Si es modo edición, carga los datos del negocio
   useEffect(() => {
     if (branch) {
       setName(branch.name || branch.branch_name || '');
