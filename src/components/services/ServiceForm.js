@@ -62,6 +62,7 @@ const ServiceForm = ({
       description: description.trim(),
       id_specialty: idSpecialty,
       id_branch: idBranch,
+      state_service: 1
     };
 
     onSubmit(serviceData);
