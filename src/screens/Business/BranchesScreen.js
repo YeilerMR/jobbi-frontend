@@ -123,7 +123,7 @@ const BranchesScreen = () => {
         style={{ flexDirection: 'row', alignItems: 'flex-start' }}
         onPress={() => {
           setBranchMode(item.id_branch || item.id_Branch);
-          navigation.navigate('Services');
+          navigation.navigate('Services', {branchId: item.id_Branch || item.id_branch});
         }}
         //onPress={() => navigation.navigate('Employees', { branchId: item.id_Branch || item.id_branch })}
       >

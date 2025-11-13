@@ -6,7 +6,7 @@ export const createService = async (service) => {
 
     const token = await getAuthToken();
     try {
-        const res = await axios.post('/services', service, {
+        const res = await axios.post('/services/create', service, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

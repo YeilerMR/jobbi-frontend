@@ -9,7 +9,8 @@ const ServiceForm = ({
   specialties = [],
   onSubmit,
   onCancel,
-  isLoading = false
+  isLoading = false,
+  idBranch = null
 }) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
@@ -59,8 +60,8 @@ const ServiceForm = ({
       price: parseFloat(price),
       duration: parseInt(duration, 10),
       description: description.trim(),
-      id_specialty: idSpecialty, // ← Incluir en el payload
-      id_branch: 12,
+      id_specialty: idSpecialty,
+      id_branch: idBranch,
     };
 
     onSubmit(serviceData);

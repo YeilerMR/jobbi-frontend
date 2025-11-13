@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet, Modal } from 'react-native';
 import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { useRoute } from '@react-navigation/native';
 import { useServiceView } from '../../hooks/ServiceContext';
 import {
   getServices,
@@ -25,7 +25,8 @@ const Service = () => {
   const { serviceViewMode, resetToAllMode } = useServiceView();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  
+  const route = useRoute();
+  const branchId = route?.params?.branchId ?? null;
   // Referencia para trackear si venimos de Branches
   const cameFromBranchesRef = useRef(false);
 
@@ -39,11 +40,14 @@ const Service = () => {
 
   // Efecto principal para cargar servicios
   useEffect(() => {
-    
-    if (isFocused) {
-      fetchServicesBasedOnMode();
-    }
-  }, [isFocused, serviceViewMode.mode, serviceViewMode.branchId]);
+    fetchServicesBasedOnMode();
+  }, [branchId])
+  // useEffect(() => {
+
+  //   if (isFocused) {
+  //     fetchServicesBasedOnMode();
+  //   }
+  // }, [isFocused, serviceViewMode.mode, serviceViewMode.branchId]);
 
   // Efecto para detectar navegación desde Branches vs Drawer
   useFocusEffect(
@@ -52,23 +56,23 @@ const Service = () => {
       const navigationState = navigation.getState();
       const currentRoute = navigationState.routes[navigationState.index]?.name;
       const previousRoute = navigationState.routes[navigationState.index - 1]?.name;
-      
-     
-      
+
+
+
       if (previousRoute === 'Branches') {
         // Venimos de Branches - NO resetear
         cameFromBranchesRef.current = true;
-      
+
       } else if (previousRoute && previousRoute !== 'Branches') {
         // Venimos de otra pantalla (probablemente drawer) - RESETEAR
         cameFromBranchesRef.current = false;
-       
+
         resetToAllMode();
       }
-      
+
       // Si no hay ruta anterior (app recién iniciada), también resetear
       if (!previousRoute) {
-       
+
         resetToAllMode();
       }
     }, [navigation, resetToAllMode])
@@ -79,10 +83,10 @@ const Service = () => {
     try {
       let res;
       if (serviceViewMode.mode === 'branch' && serviceViewMode.branchId != null) {
-      
+
         res = await getAllServices(serviceViewMode.branchId);
       } else {
-        
+
         res = await getServices();
       }
       setServices(res?.data || []);
@@ -145,6 +149,7 @@ const Service = () => {
         await updateService(editingService.id_service, serviceData);
         Alert.alert('Success', 'Service Updated!');
       } else {
+        console.log("Service: ",serviceData);
         await createService(serviceData);
         Alert.alert('Success', 'Service Created!');
       }
@@ -217,6 +222,7 @@ const Service = () => {
             specialties={specialties}
             onSubmit={handleSaveService}
             onCancel={() => setFormModalVisible(false)}
+            idBranch={branchId}
           />
         </View>
       </Modal>
