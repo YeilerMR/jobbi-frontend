@@ -62,3 +62,17 @@ export const redeemReward = async (rewardId)=>{
         throw error;
     }
 }
+
+export const rewardQRValidate = async (reward)=>{
+    const token = await getAuthToken();
+    try {
+        const res = await axios.post('/gifts/qr/validate', reward, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+}

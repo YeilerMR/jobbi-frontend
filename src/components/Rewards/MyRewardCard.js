@@ -12,6 +12,11 @@ const { brand, green, badgeEnable } = Colors;
 const MyRewardCard = ({ reward }) => {
   const [showQR, setShowQR] = useState(false);
 
+  const qrData = {
+      id_user_gift: reward.id,
+      markUsed: true
+  };
+
   return (
     <>
       <TouchableOpacity activeOpacity={0.9} onPress={() => setShowQR(true)} style={styles.mainView}>
@@ -27,21 +32,18 @@ const MyRewardCard = ({ reward }) => {
         </View>
       </TouchableOpacity>
 
-      <Modal transparent visible= {showQR} animationType='fade' onRequestClose={()=> setShowQR(false)}>
+      <Modal transparent visible={showQR} animationType="fade" onRequestClose={() => setShowQR(false)}>
         <SafeAreaView style={styles.modalOverlay} edges={['bottom']}>
           <View style={styles.qrModal}>
             <Text style={styles.qrTitle}>Show this QR to redeem</Text>
             <Text style={styles.qrSubtitle}>{reward.name}</Text>
             <QRCode
-              value={`https://example.com/reward/${reward.id}`} // 👈 Cambia esto más adelante por un token seguro
+              value={JSON.stringify(qrData)} // 👈 Cambia esto más adelante por un token seguro
               size={220}
               color="black"
               backgroundColor="white"
             />
-            <Pressable
-              style={styles.closeButton}
-              onPress={() => setShowQR(false)}
-            >
+            <Pressable style={styles.closeButton} onPress={() => setShowQR(false)}>
               <Text style={styles.closeButtonText}>Close</Text>
             </Pressable>
           </View>
