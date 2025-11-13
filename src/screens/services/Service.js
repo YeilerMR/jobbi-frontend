@@ -166,7 +166,7 @@ const Service = () => {
     <View style={{ flex: 1, backgroundColor: primary, padding: 20 }}>
       <ServiceEmployeeTabs
         activeTab="services"
-        branchId={serviceViewMode.mode === 'branch' ? serviceViewMode.branchId : null}
+        branchId={serviceViewMode.mode === 'branch' ? branchId : null}
       />
 
       <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 16, color: '#333' }}>
