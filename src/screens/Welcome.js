@@ -37,7 +37,7 @@ const AdminView = ({ navigation }) => {
           title="Employees"
           count={data.employees}
           color="#4CAF50"
-          onPress={() => navigation.navigate('Rewards')}
+          onPress={() => navigation.navigate('Employees')}
         />
         <Tile
           title="Business"
