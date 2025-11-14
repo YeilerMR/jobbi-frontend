@@ -15,6 +15,7 @@ import { searchSpecialties } from '../../api/services';
 import { getEmployeesByBranch } from '../../api/employees';
 import { Ionicons } from '@expo/vector-icons';
 import { getSlots } from '../../api/schedule';
+import { createAppointment } from '../../api/appointment';
 
 const ScheduleScreen = () => {
     const [service, setService] = useState('');
@@ -118,10 +119,10 @@ const ScheduleScreen = () => {
         try {
             const res = await createAppointment({
                 "id_branch": selectedBranch?.id_branch,
-                "id_employee": selectedEmployee?.id,
-                "id_service": 2,
+                "id_employee": selectedEmployee?.id_employee,
+                "id_service": selectedBranch?.id_service,
                 "appointment_date": selectedDate,
-                "appointment_time": selectedHour
+                "appointment_time": `${selectedHour}:00`
             });
             if (res) {
                 alert(`Confirmed appointment`);
