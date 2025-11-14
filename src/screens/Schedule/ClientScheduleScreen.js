@@ -25,7 +25,6 @@ const ClientScheduleScreen = () => {
     const load = async () => {
       const res = await getMyEvents();
       const rows = res?.data?.clientRows || [];
-
       const mapped = rows.map(ev => ({
         id: ev.id_book_event,
         name: ev.event_name,
@@ -99,7 +98,7 @@ const ClientScheduleScreen = () => {
       <View style={styles.priceRow}>
         <View style={styles.iconRow}>
           <DollarSign size={16} color="#333" />
-          <Text style={styles.priceText}>${item.price.toFixed(2)}</Text>
+          <Text style={styles.priceText}>{item.price.toFixed(2)}</Text>
         </View>
 
         <View style={styles.iconRow}>
