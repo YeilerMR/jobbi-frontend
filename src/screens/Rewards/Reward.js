@@ -147,7 +147,7 @@ const Reward = () => {
       {userRole !== 1 && (
         <CollapsibleSection title="My Rewards">
           {myRewards.length > 0 ? (
-            myRewards.map((reward) => <MyRewardCard key={reward.id} reward={reward} onUse={handleUseReward} />)
+            myRewards.map((reward) => <MyRewardCard key={reward.id} reward={reward} />)
           ) : (
             <Text style={{ textAlign: 'center', color: subtitle, marginTop: 10 }}>No rewards redeemed yet.</Text>
           )}
