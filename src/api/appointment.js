@@ -46,3 +46,17 @@ export const createAppointment = async (appointmentData) => {
         throw error;
     }
 };
+
+export const getMyEvents = async () => {
+    const token = await getAuthToken();
+    try {
+        const res = await axios.get(`/calendar/events`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+}
