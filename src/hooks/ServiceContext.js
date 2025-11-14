@@ -1,4 +1,3 @@
-// ServiceContext.js
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
 const ServiceContext = createContext();
@@ -10,7 +9,6 @@ export const ServiceProvider = ({ children }) => {
     fromBranches: false
   });
 
-  // Función para resetear al modo "ver todos"
   const resetToAllMode = useCallback(() => {
     setServiceViewMode({
       mode: 'all',
@@ -19,7 +17,6 @@ export const ServiceProvider = ({ children }) => {
     });
   }, []);
 
-  // Función para establecer modo branch
   const setBranchMode = useCallback((branchId) => {
     setServiceViewMode({
       mode: 'branch',

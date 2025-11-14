@@ -117,7 +117,7 @@ const EmployeesScreen = () => {
     >
       <TouchableOpacity
         style={{ flexDirection: 'row', alignItems: 'flex-start' }}
-        onPress={() => navigation.navigate('Sucursales')}
+        onPress={null}
       >
         <Ionicons name="person" size={24} color={'#4e73df'}></Ionicons>
         <View style={{ marginLeft: 12, flex: 1 }}>

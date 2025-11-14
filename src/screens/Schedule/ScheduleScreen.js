@@ -10,15 +10,11 @@ import {
     Platform,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { getAllBranches } from '../../api/branches';
 import { searchSpecialties } from '../../api/services';
 import { getEmployeesByBranch } from '../../api/employees';
 import { Ionicons } from '@expo/vector-icons';
-
-const mockFetchHours = async (date) => {
-    await new Promise((r) => setTimeout(r, 500));
-    return ['08:00', '09:30', '11:00', '13:00', '15:00', '16:30'];
-};
+import { getSlots } from '../../api/schedule';
+import { createAppointment } from '../../api/appointment';
 
 const ScheduleScreen = () => {
     const [service, setService] = useState('');
@@ -34,19 +30,37 @@ const ScheduleScreen = () => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const fetchBranches = async () => {
+        setLoading(true);
+        try {
+            const res = await searchSpecialties(service);
+            setBranches([]);
+            setBranches(res.data);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchBranches = async () => {
-            setLoading(true);
-            try {
-                const res = await searchSpecialties(service);
-                setBranches([]);
-                setBranches(res.data);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchBranches();
     }, [service]);
+
+    const resetAll = () => {
+        setService('');
+        setBranches([]);
+        setEmployees([]);
+        setHours([]);
+
+        setSelectedBranch(null);
+        setSelectedEmployee(null);
+        setSelectedDate(null);
+        setSelectedHour(null);
+
+        setTimeout(() => {
+            fetchBranches();
+        }, 0);
+    };
+
 
     const handleSelectBranch = async (branch) => {
         setSelectedBranch(branch);
@@ -74,8 +88,12 @@ const ScheduleScreen = () => {
         setSelectedDate(date.toISOString().split('T')[0]);
         setSelectedHour(null);
         setLoading(true);
-        const data = await mockFetchHours(date);
-        setHours(data);
+        const data = await getSlots(selectedEmployee?.id_employee, date.toISOString().split('T')[0]);
+        const onlyTimes = data.data.slots.map(slot => {
+            const dateObj = new Date(slot.start);
+            return dateObj.toTimeString().slice(0, 5); // HH:mm
+        });
+        setHours(onlyTimes);
         setLoading(false);
     };
 
@@ -118,22 +136,21 @@ const ScheduleScreen = () => {
         try {
             const res = await createAppointment({
                 "id_branch": selectedBranch?.id_branch,
-                "id_employee": selectedEmployee?.id,
-                "id_service": 2,
+                "id_employee": selectedEmployee?.id_employee,
+                "id_service": selectedBranch?.id_service,
                 "appointment_date": selectedDate,
-                "appointment_time": selectedHour
+                "appointment_time": `${selectedHour}:00`
             });
             if (res) {
                 alert(`Confirmed appointment`);
+                resetAll();
             } else {
                 alert(`Error confirming appointment`);
             }
         } catch (error) {
-            console.log(error);
         }
     };
 
-    // (today → 2 months)
     const today = new Date();
     const maxDate = new Date();
     maxDate.setMonth(today.getMonth() + 2);
@@ -275,6 +292,9 @@ const ScheduleScreen = () => {
                 </View>
             )}
 
+            {selectedDate && !selectedHour && hours.length == 0 && !loading && (
+                <Text style={styles.itemText}>Employee not available</Text>
+            )}
             {selectedHour && (
                 <TouchableOpacity style={styles.confirmButton} onPress={confirmAppointment}>
                     <Text style={styles.confirmText}>Confirm appointment</Text>

@@ -1,4 +1,3 @@
-// src/components/services/ServiceInfoModal.js
 import React, { useState, useEffect } from 'react';
 import { View, Text, Modal, TouchableOpacity, Switch, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';

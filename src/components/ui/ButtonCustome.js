@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // o la librería que uses
 
 const CustomButton = ({
   onPress,
@@ -15,10 +14,10 @@ const CustomButton = ({
   paddingHorizontal = 16,
   fontSize = 16,
   fontWeight = '600',
-  icon: IconComponent, // componente de ícono (ej. Ionicons)
-  iconName,           // nombre del ícono
-  iconColor,          // color del ícono
-  iconPosition = 'left', // 'left', 'right', 'top'
+  icon: IconComponent, 
+  iconName,         
+  iconColor,       
+  iconPosition = 'left',
   iconSize = 18,
   disabled = false,
   loading = false,
@@ -44,7 +43,6 @@ const CustomButton = ({
       ]}
     >
       {loading ? (
-        // Puedes poner un ActivityIndicator aquí si quieres
         <Text style={[styles.text, { color: textColor, fontSize, fontWeight }]}>
           Loading...
         </Text>

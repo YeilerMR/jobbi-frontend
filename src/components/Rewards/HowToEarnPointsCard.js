@@ -7,14 +7,12 @@ import { Colors } from '../../assets/css/general/general';
 const { brand, subtitle } = Colors;
 
 const HowToEarnPointsCard = ({ userRole }) => {
-  // Determinar los puntos según el rol
-  let pointsPerAppointment = 10; // valor por defecto para rol 2 (client)
+  let pointsPerAppointment = 10;
   if (userRole === 1) {
     pointsPerAppointment = 1;   // admin
   } else if (userRole === 3) {
     pointsPerAppointment = 5;   // employee
   }
-  // rol 2 (client) ya tiene 10, así que no necesita cambio
 
   return (
     <View style={styles.mainView}>

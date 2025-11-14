@@ -1,13 +1,13 @@
-// src/components/ui/ServiceEmployeeTabs.js
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { getSelectedBranchTab } from '../../utils/Consts';
 
 const ServiceEmployeeTabs = ({ activeTab = 'services', branchId }) => {
   const navigation = useNavigation();
-
+  branchId = getSelectedBranchTab();
   const handleNavigate = (target) => {
-    if (target === activeTab) return; // ya estás ahí
+    if (target === activeTab) return;
 
     if (target === 'services') {
       navigation.navigate('Services', { branchId: branchId || undefined });

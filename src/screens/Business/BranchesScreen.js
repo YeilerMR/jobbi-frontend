@@ -9,7 +9,7 @@ import { Colors } from '../../assets/css/general/general';
 import BranchModal from '../../components/business/BranchesModal';
 import { useRoute } from '@react-navigation/native';
 import { useServiceView } from '../../hooks/ServiceContext';
-
+import { setSelectedBranchTab } from '../../utils/Consts';
 const { btnEdit, btnDisable, badgeEnable, badgeDisable, textBadgeE, textBadgeD, green } = Colors;
 
 const BranchesScreen = () => {
@@ -22,12 +22,8 @@ const BranchesScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
 
-  //const { setServiceViewMode } = useServiceView();
   const { setBranchMode } = useServiceView();
 
-  // useEffect(() => {
-  //   fetchBranches();
-  // }, [businessId]);
   useFocusEffect(
     useCallback(() => {
       fetchBranches();
@@ -123,9 +119,9 @@ const BranchesScreen = () => {
         style={{ flexDirection: 'row', alignItems: 'flex-start' }}
         onPress={() => {
           setBranchMode(item.id_branch || item.id_Branch);
-          navigation.navigate('Services');
+          setSelectedBranchTab(item.id_Branch || item.id_branch);
+          navigation.navigate('Services', {branchId: item.id_Branch || item.id_branch});
         }}
-        //onPress={() => navigation.navigate('Employees', { branchId: item.id_Branch || item.id_branch })}
       >
         <Ionicons name="storefront-outline" size={24} color={'#4e73df'}></Ionicons>
         <View style={{ marginLeft: 12, flex: 1 }}>

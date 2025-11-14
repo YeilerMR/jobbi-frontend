@@ -42,10 +42,8 @@ export const createBranch = async (businessId,branchData) => {
                 Authorization: `Bearer ${token}`
             }
         });
-        console.log(res.data);
         return res.data;
     } catch (error) {
-        console.log(error);
         throw error;
     }
 };
@@ -70,7 +68,6 @@ export const updateBranch = async (id, branchData) => {
         );
         return res.data;
     } catch (error) {
-        console.log("Error actualizando", error);
         throw error;
     }
 };

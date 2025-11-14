@@ -2,11 +2,10 @@ import { getAuthToken } from "../utils/Token";
 import axios from "./axios";
 
 export const createService = async (service) => {
-    console.log('Endpoint de crear:', service);
 
     const token = await getAuthToken();
     try {
-        const res = await axios.post('/services', service, {
+        const res = await axios.post('/services/create', service, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -18,9 +17,7 @@ export const createService = async (service) => {
 };
 
 export const getAllServices = async (idBranch) => {
-    console.log('idBranch:', idBranch)
     const token = await getAuthToken();
-    console.log(token);
 
     try {
         const res = await axios.get(`/Services/${idBranch}`, {

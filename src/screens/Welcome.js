@@ -4,7 +4,6 @@ import { StatusBar, View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useUser } from '../hooks/UserContext.js';
 import Tile from '../components/ui/Tile.js';
 
-// Importa tus estilos existentes
 import {
   InnerContainer,
   PageTitle,
@@ -18,9 +17,6 @@ import {
   Avatar,
 } from '../assets/css/auth/auth.js';
 
-// Importa el componente Tile
-
-// Mock data — luego reemplázalo con datos reales desde tu API o store
 const mockData = {
   employees: 5,
   business: 12,
@@ -28,53 +24,44 @@ const mockData = {
   service: 8,
 };
 
-// Componentes específicos por rol (actualizados)
 const AdminView = ({ navigation }) => {
   const [data, setData] = useState(mockData);
 
-  // Aquí podrías hacer fetch de los datos reales
-  useEffect(() => {
-    // Ejemplo: fetchCounts().then(setData);
-  }, []);
 
   return (
     <>
       <PageTitle welcome={true}>Admin Dashboard</PageTitle>
-      {/* <Subtitle welcome={true}>Manage your business, employees & services.</Subtitle> */}
 
-      {/* Fila 1: Rewards y Business */}
       <View style={styles.row}>
         <Tile
           title="Employees"
           count={data.employees}
-          color="#4CAF50" // verde
-          onPress={() => navigation.navigate('Rewards')}
+          color="#4CAF50"
+          onPress={() => navigation.navigate('Employees')}
         />
         <Tile
           title="Business"
           count={data.business}
-          color="#F44336" // rojo
+          color="#F44336"
           onPress={() => navigation.navigate('Business')}
         />
       </View>
 
-      {/* Fila 2: Branch y Service */}
       <View style={styles.row}>
         <Tile
           title="Branch"
           count={data.branch}
-          color="#FF9800" // naranja
+          color="#FF9800" 
           onPress={() => navigation.navigate('Branches')}
         />
         <Tile
           title="Service"
           count={data.service}
-          color="#2196F3" // azul
+          color="#2196F3"
           onPress={() => navigation.navigate('Services')}
         />
       </View>
 
-      {/* Lista de proyectos o actividades (placeholder por ahora) */}
       <View style={styles.listSection}>
         <Text style={styles.sectionTitle}>Recent Activities</Text>
         <ScrollView style={styles.listContainer}>
@@ -120,7 +107,6 @@ const EmployeeView = ({ navigation }) => (
 
 const Welcome = ({ navigation }) => {
   const { userRole } = useUser();
-  console.log('current user role:', userRole);
 
   const renderContent = () => {
     if (userRole === 1) {
@@ -162,7 +148,6 @@ const Welcome = ({ navigation }) => {
   );
 };
 
-// Estilos adicionales para el grid y la lista
 const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
@@ -172,7 +157,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    marginBottom: 16, // espacio entre filas
+    marginBottom: 16,
   },
   listSection: {
     marginTop: 30,

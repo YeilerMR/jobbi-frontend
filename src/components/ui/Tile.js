@@ -1,4 +1,3 @@
-// Dentro de Welcome.js (o en Tile.js)
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 

@@ -16,31 +16,28 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react-native";
-import { cancelApointment, completeApointment } from "../../api/appointment";
-
-const mockFetchClient = async (date) => {
-  return [
-    {
-      id: 1,
-      name: "Corte Masculino",
-      employee_name: "Juan Peluquero",
-      client_name: "Ana Cliente",
-      date: "sábado, 30 de noviembre de 2024 - 10:00",
-      location: "Sucursal Centro",
-      price: 25.0,
-      duration: "30min",
-      status: "Aceptada",
-    },
-  ];
-};
+import { cancelApointment, completeApointment, getMyEvents } from "../../api/appointment";
 
 const ClientScheduleScreen = () => {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
     const load = async () => {
-      const data = await mockFetchClient();
-      setAppointments(data);
+      const res = await getMyEvents();
+      const rows = res?.data?.clientRows || [];
+
+      const mapped = rows.map(ev => ({
+        id: ev.id_book_event,
+        name: ev.event_name,
+        employee_name: ev.employee_name,
+        client_name: ev.client_name,
+        date: ev.formatted_datetime,
+        location: ev.branch_location,
+        price: ev.service_price,
+        duration: `${ev.duration_minutes}min`,
+        status: ev.state || "Stateless",
+      }));
+      setAppointments(mapped);
     };
     load();
   }, []);
@@ -52,7 +49,6 @@ const ClientScheduleScreen = () => {
 
       setAppointments((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
-      console.log(error);
       Alert.alert("Error", "The appointment could not be cancelled.");
     }
   }
@@ -67,7 +63,6 @@ const ClientScheduleScreen = () => {
         )
       );
     } catch (error) {
-      console.log(error);
       Alert.alert("Error", "No se pudo completar la cita.");
     }
   }
@@ -118,6 +113,9 @@ const ClientScheduleScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Appointment List</Text>
+      {!appointments && (
+        <Text style={styles.title}>No appointment found</Text>
+      )}
       <FlatList
         data={appointments}
         keyExtractor={(item) => item.id.toString()}

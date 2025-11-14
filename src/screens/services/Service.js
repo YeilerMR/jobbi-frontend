@@ -1,9 +1,8 @@
-// Service.js - VERSIÓN COMPLETA
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet, Modal } from 'react-native';
 import { useNavigation, useIsFocused, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { useRoute } from '@react-navigation/native';
 import { useServiceView } from '../../hooks/ServiceContext';
 import {
   getServices,
@@ -25,8 +24,8 @@ const Service = () => {
   const { serviceViewMode, resetToAllMode } = useServiceView();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  
-  // Referencia para trackear si venimos de Branches
+  const route = useRoute();
+  const branchId = route?.params?.branchId ?? null;
   const cameFromBranchesRef = useRef(false);
 
   const [services, setServices] = useState([]);
@@ -37,38 +36,28 @@ const Service = () => {
   const [editingService, setEditingService] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Efecto principal para cargar servicios
   useEffect(() => {
-    
-    if (isFocused) {
-      fetchServicesBasedOnMode();
-    }
-  }, [isFocused, serviceViewMode.mode, serviceViewMode.branchId]);
+    fetchServicesBasedOnMode();
+  }, [branchId])
 
-  // Efecto para detectar navegación desde Branches vs Drawer
   useFocusEffect(
     useCallback(() => {
-      // Cuando la pantalla gana foco, verificar si venimos de Branches
       const navigationState = navigation.getState();
       const currentRoute = navigationState.routes[navigationState.index]?.name;
       const previousRoute = navigationState.routes[navigationState.index - 1]?.name;
-      
-     
-      
+
+
+
       if (previousRoute === 'Branches') {
-        // Venimos de Branches - NO resetear
         cameFromBranchesRef.current = true;
-      
+
       } else if (previousRoute && previousRoute !== 'Branches') {
-        // Venimos de otra pantalla (probablemente drawer) - RESETEAR
         cameFromBranchesRef.current = false;
-       
+
         resetToAllMode();
       }
-      
-      // Si no hay ruta anterior (app recién iniciada), también resetear
       if (!previousRoute) {
-       
+
         resetToAllMode();
       }
     }, [navigation, resetToAllMode])
@@ -79,10 +68,10 @@ const Service = () => {
     try {
       let res;
       if (serviceViewMode.mode === 'branch' && serviceViewMode.branchId != null) {
-      
+
         res = await getAllServices(serviceViewMode.branchId);
       } else {
-        
+
         res = await getServices();
       }
       setServices(res?.data || []);
@@ -161,7 +150,7 @@ const Service = () => {
     <View style={{ flex: 1, backgroundColor: primary, padding: 20 }}>
       <ServiceEmployeeTabs
         activeTab="services"
-        branchId={serviceViewMode.mode === 'branch' ? serviceViewMode.branchId : null}
+        branchId={serviceViewMode.mode === 'branch' ? branchId : null}
       />
 
       <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 16, color: '#333' }}>
@@ -217,6 +206,7 @@ const Service = () => {
             specialties={specialties}
             onSubmit={handleSaveService}
             onCancel={() => setFormModalVisible(false)}
+            idBranch={branchId}
           />
         </View>
       </Modal>

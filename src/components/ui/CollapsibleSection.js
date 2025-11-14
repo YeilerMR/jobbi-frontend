@@ -1,4 +1,3 @@
-// components/CollapsibleSection.js
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -29,7 +28,7 @@ const CollapsibleSection = ({ title, children, maxHeight = 300 }) => {
 
   const animatedHeight = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, maxHeight], // 👈 Altura fija máxima
+    outputRange: [0, maxHeight],
   });
 
   return (
@@ -44,9 +43,8 @@ const CollapsibleSection = ({ title, children, maxHeight = 300 }) => {
       </TouchableOpacity>
 
       <Animated.View style={[styles.content, { height: animatedHeight }]}>
-        {/* 👇 ScrollView interno con altura fija */}
         <ScrollView
-          nestedScrollEnabled={true} // 👈 Clave para Android
+          nestedScrollEnabled={true}
           style={{ flex: 1 }}
           showsVerticalScrollIndicator={true}
         >

@@ -1,4 +1,3 @@
-// components/BusinessModal.js
 import React, { useState, useEffect } from 'react';
 import {
   Modal,
@@ -15,14 +14,13 @@ const BusinessModal = ({
   visible,
   onClose,
   onSave,
-  business = null, // null = crear, objeto = editar
+  business = null,
 }) => {
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
 
-  // Si es modo edición, carga los datos del negocio
   useEffect(() => {
     if (business) {
       setName(business.name || '');
@@ -30,7 +28,6 @@ const BusinessModal = ({
       setPhone(business.phone || '');
       setEmail(business.email || '');
     } else {
-      // Modo crear: limpia los campos
       setName('');
       setLocation('');
       setPhone('');
