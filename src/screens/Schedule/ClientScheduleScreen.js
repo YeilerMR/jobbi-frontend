@@ -18,22 +18,6 @@ import {
 } from "lucide-react-native";
 import { cancelApointment, completeApointment, getMyEvents } from "../../api/appointment";
 
-const mockFetchClient = async (date) => {
-  return [
-    {
-      id: 1,
-      name: "Corte Masculino",
-      employee_name: "Juan Peluquero",
-      client_name: "Ana Cliente",
-      date: "sábado, 30 de noviembre de 2024 - 10:00",
-      location: "Sucursal Centro",
-      price: 25.0,
-      duration: "30min",
-      status: "Aceptada",
-    },
-  ];
-};
-
 const ClientScheduleScreen = () => {
   const [appointments, setAppointments] = useState([]);
 
