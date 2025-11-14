@@ -25,9 +25,9 @@ const MyRewardCard = ({ reward }) => {
           <View style={styles.rowView}>
             <Text style={styles.textCard}>{reward.name}</Text>
             <Text style={styles.dateText}>Redeemed on: {reward.redeemedDate}</Text>
-            <Text style={[styles.statusText, { color: reward.isActive ? '#999' : green }]}>
+            {/* <Text style={[styles.statusText, { color: reward.isActive ? '#999' : green }]}>
               Status: {reward.isActive ? 'Used' : 'Active'}
-            </Text>
+            </Text> */}
           </View>
         </View>
       </TouchableOpacity>
