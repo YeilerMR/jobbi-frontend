@@ -1,21 +1,35 @@
-// src/components/Subscription/PlanCard.js
+// PlanCard.js
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Colors } from '../../assets/css/general/general';
 
-const { primary, green, brand, badgeEnable } = Colors;
+const { green, brand, badgeEnable, darkLight } = Colors;
 
-const PlanCard = ({ plan, onSelect }) => {
+const PlanCard = ({ plan, isActive, onSelect }) => {
   const isFree = plan.price === 0;
   const isPremium = !isFree;
 
-  // Formatear límites para mostrar
   const renderLimit = (label, value) => {
-    if (value === null) {
-      return `${label}: Unlimited`;
-    }
+    if (value === null) return `${label}: Unlimited`;
     return `${label}: ${value}`;
   };
+
+  // Determinar colores del botón
+  let buttonText = '';
+  let buttonBgColor;
+  let buttonTextColor;
+
+  if (isActive) {
+    // Botón deshabilitado: es el plan actual
+    buttonBgColor = darkLight;
+    buttonTextColor = isFree ? badgeEnable : brand;
+    buttonText = isFree ? 'Current Plan' : 'Active Subscription';
+  } else {
+    // Botón habilitado: no es el plan actual
+    buttonBgColor = isFree ? green : brand;
+    buttonTextColor = badgeEnable;
+    buttonText = isFree ? 'Use Free Plan' : 'Subscribe';
+  }
 
   return (
     <View
@@ -24,10 +38,15 @@ const PlanCard = ({ plan, onSelect }) => {
         isPremium && { borderWidth: 2, borderColor: brand, backgroundColor: '#f0f9ff' },
       ]}
     >
-      {/* Badge si es premium */}
-      {isPremium && (
+      {/* Badges */}
+      {isPremium && !isActive && (
         <View style={styles.premiumBadge}>
           <Text style={styles.premiumBadgeText}>PREMIUM</Text>
+        </View>
+      )}
+      {isActive && (
+        <View style={[styles.activeBadge, isPremium && { backgroundColor: brand }]}>
+          <Text style={styles.activeBadgeText}>ACTIVE</Text>
         </View>
       )}
 
@@ -55,11 +74,12 @@ const PlanCard = ({ plan, onSelect }) => {
       </View>
 
       <TouchableOpacity
-        style={[styles.button, isPremium && { backgroundColor: brand }]}
+        style={[styles.button, { backgroundColor: buttonBgColor }]}
         onPress={() => onSelect(plan)}
+        disabled={isActive} // solo deshabilitado si es el plan actual
       >
-        <Text style={styles.buttonText}>
-          {isFree ? 'Usar Plan Gratis' : 'Suscribirse'}
+        <Text style={[styles.buttonText, { color: buttonTextColor }]}>
+          {buttonText}
         </Text>
       </TouchableOpacity>
     </View>
@@ -89,6 +109,20 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   premiumBadgeText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
+  activeBadge: {
+    position: 'absolute',
+    top: -12,
+    left: 20,
+    backgroundColor: '#4CAF50', // puedes cambiarlo si quieres que sea dinámico
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 20,
+  },
+  activeBadgeText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 12,
@@ -132,13 +166,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   button: {
-    backgroundColor: green,
     paddingVertical: 12,
     borderRadius: 12,
     alignItems: 'center',
   },
   buttonText: {
-    color: badgeEnable,
     fontWeight: '600',
     fontSize: 16,
   },

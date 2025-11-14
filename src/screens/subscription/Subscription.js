@@ -1,60 +1,73 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Colors } from '../../assets/css/general/general';
 import PlanCard from '../../components/subscription/PlanCard';
-import { getAllPlans } from '../../api/subscription';
+import { getAllPlans, getCurrentPlan, upgradePlan } from '../../api/subscription';
 
-const { primary, brand } = Colors;
-
-// Mock data (simulando respuesta del backend)
-const mockPlans = [
-  {
-    id_plans_subscription: 1,
-    name: 'Free Plan',
-    description: 'Basic free plan with limitations',
-    price: 0,
-    duration: 30,
-    is_active: 1,
-    limits: {
-      maxBranches: 1,
-      maxEmployeesPerBranch: 5,
-    },
-  },
-  {
-    id_plans_subscription: 3,
-    name: 'Premium Plan',
-    description: 'Unlimited plan for large businesses',
-    price: 15,
-    duration: 30,
-    is_active: 1,
-    limits: {
-      maxBranches: null,
-      maxEmployeesPerBranch: null,
-    },
-  },
-];
+const { primary, brand, green } = Colors;
 
 const Subscription = () => {
-    const [plans, setPlans] = useState([]);
+  const [plans, setPlans] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [activePlanId, setActivePlanId] = useState(null);
 
-    useEffect(() => {
-        fetchPlans();
-    }, []);
+  useEffect(() => {
+    fetchPlans();
+    fetchCurrentPlan();
+  }, []);
 
-    const fetchPlans = async () => {
-        try {
-            const res = await getAllPlans();
-            if (res && res?.data) {
-                setPlans(res.data);
-            }
-        } catch (error) {
-            throw error;
+  const fetchPlans = async () => {
+    setLoading(true);
+    try {
+      const res = await getAllPlans();
+      if (res && res?.data) {
+        setPlans(res.data);
+      }
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCurrentPlan = async () => {
+    try {
+        const res = await getCurrentPlan();
+        if (res && res.data) {
+            setActivePlanId(res.data.plan_id);
         }
+    } catch (error) {
+        console.error('Error fetching active plan:', error);
+        throw error;
+    }
+  }
+
+  const handleSelectPlan = async (plan) => {
+    //subscribe logic
+
+    if (plan.id_plans_subscription === activePlanId) {
+        return;
     }
 
-  const handleSelectPlan = (plan) => {
-    //subscribe logic
-    console.log('Plan seleccionado: ', plan.name);
+    setLoading(true);
+    try {
+        
+        const res = await upgradePlan({newPlanId: plan.id_plans_subscription});
+
+        if (res?.data?.plan_id) {
+            setActivePlanId(res.data.plan_id);
+        } else {
+            setActivePlanId(plan.id_plans_subscription);
+        }
+
+        alert(`Plan updated to ${plan.name} successfully!`);
+
+    } catch (error) {
+        console.error('error en handleSelectPlan', error);
+        alert('Failed to update plan. Please try again.');
+    } finally {
+        setLoading(false);
+    }
   };
   return (
     <ScrollView>
@@ -62,9 +75,14 @@ const Subscription = () => {
         <Text style={styles.title}>Choose your plan</Text>
         <Text style={styles.subtitle}>Choose the plan that best suits your business needs</Text>
       </View>
-
+      {loading && (
+        <View style={styles.overlay}>
+          <ActivityIndicator size="large" color={brand} />
+          <Text style={[styles.overlayText, { marginTop: 12 }]}>Loading plans...</Text>
+        </View>
+      )}
       {plans.map((plan) => (
-        <PlanCard key={plan.id_plans_subscription} plan={plan} onSelect={handleSelectPlan} />
+        <PlanCard key={plan.id_plans_subscription} plan={plan} isActive={plan.id_plans_subscription === activePlanId} onSelect={handleSelectPlan} />
       ))}
     </ScrollView>
   );
@@ -90,6 +108,12 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     color: '#666',
+    textAlign: 'center',
+  },
+  overlayText: {
+    color: green,
+    fontSize: 18,
+    fontWeight: '600',
     textAlign: 'center',
   },
 });
