@@ -33,9 +33,7 @@ const ScheduleScreen = () => {
     const fetchBranches = async () => {
         setLoading(true);
         try {
-            console.log("Buscando...");
             const res = await searchSpecialties(service);
-            console.log("Ser:", service, " res: ", res);
             setBranches([]);
             setBranches(res.data);
         } finally {
