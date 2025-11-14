@@ -36,7 +36,8 @@ export const completeApointment = async (id) => {
 export const createAppointment = async (appointmentData) => {
     const token = await getAuthToken();
     try {
-        const res = await axios.post(`/appointments`, appointmentData, {
+        console.log("Data: ", appointmentData);
+        const res = await axios.post(`/calendar/${appointmentData.id_employee}/events`, appointmentData, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
