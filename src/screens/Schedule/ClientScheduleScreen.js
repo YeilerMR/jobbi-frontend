@@ -16,7 +16,7 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react-native";
-import { cancelApointment, completeApointment } from "../../api/appointment";
+import { cancelApointment, completeApointment, getMyEvents } from "../../api/appointment";
 
 const mockFetchClient = async (date) => {
   return [
@@ -39,8 +39,21 @@ const ClientScheduleScreen = () => {
 
   useEffect(() => {
     const load = async () => {
-      const data = await mockFetchClient();
-      setAppointments(data);
+      const res = await getMyEvents();
+      const rows = res?.data?.clientRows || [];
+
+      const mapped = rows.map(ev => ({
+        id: ev.id_book_event,
+        name: ev.event_name,
+        employee_name: ev.employee_name,
+        client_name: ev.client_name,
+        date: ev.formatted_datetime,
+        location: ev.branch_location,
+        price: ev.service_price,
+        duration: `${ev.duration_minutes}min`,
+        status: ev.state || "Stateless",
+      }));
+      setAppointments(mapped);
     };
     load();
   }, []);
@@ -116,6 +129,9 @@ const ClientScheduleScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Appointment List</Text>
+      {!appointments && (
+        <Text style={styles.title}>No appointment found</Text>
+      )}
       <FlatList
         data={appointments}
         keyExtractor={(item) => item.id.toString()}
