@@ -14,6 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 import ScheduleScreen from '../screens/Schedule/ScheduleScreen.js';
 import EmployeeScheduleScreen from '../screens/Schedule/EmployeeScheduleScreen.js';
 import ClientScheduleScreen from '../screens/Schedule/ClientScheduleScreen.js';
+import ScanReward from '../screens/Rewards/ScanReward.js';
 
 
 const screenOptions = {
@@ -147,6 +148,12 @@ const employeeRoutes = [
         name: 'Rewards',
         component: Reward,//cambiar
         options: { title: 'Rewards' }
+    },
+    {
+        name: 'Scan Reward',
+        component: ScanReward,
+        options: { title: 'Scan Reward' },
+        icon: (focused) => <Ionicons name='scan-circle-outline' size={24} color={focused ? '#6200ee' : '#757575'} />,
     }
 ];
 
