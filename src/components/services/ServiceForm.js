@@ -52,10 +52,10 @@ const ServiceForm = ({
     }
 
     const serviceData = {
-      name: name.trim(),
+      name: name,
       price: parseFloat(price),
       duration: parseInt(duration, 10),
-      description: description.trim(),
+      description: description,
       id_specialty: idSpecialty,
       id_branch: idBranch,
       state_service: 1
