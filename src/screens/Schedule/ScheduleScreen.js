@@ -71,12 +71,10 @@ const ScheduleScreen = () => {
         setSelectedHour(null);
         setLoading(true);
         const data = await getSlots(selectedEmployee?.id_employee, date.toISOString().split('T')[0]);
-
         const onlyTimes = data.data.slots.map(slot => {
             const dateObj = new Date(slot.start);
             return dateObj.toTimeString().slice(0, 5); // HH:mm
         });
-
         setHours(onlyTimes);
         setLoading(false);
     };
@@ -275,6 +273,9 @@ const ScheduleScreen = () => {
                 </View>
             )}
 
+            {selectedDate && !selectedHour && hours.length == 0 && !loading && (
+                <Text style={styles.itemText}>Employee not available</Text>
+            )}
             {selectedHour && (
                 <TouchableOpacity style={styles.confirmButton} onPress={confirmAppointment}>
                     <Text style={styles.confirmText}>Confirm appointment</Text>
