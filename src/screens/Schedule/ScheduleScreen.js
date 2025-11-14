@@ -10,7 +10,6 @@ import {
     Platform,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { getAllBranches } from '../../api/branches';
 import { searchSpecialties } from '../../api/services';
 import { getEmployeesByBranch } from '../../api/employees';
 import { Ionicons } from '@expo/vector-icons';
@@ -31,19 +30,39 @@ const ScheduleScreen = () => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const fetchBranches = async () => {
+        setLoading(true);
+        try {
+            console.log("Buscando...");
+            const res = await searchSpecialties(service);
+            console.log("Ser:", service, " res: ", res);
+            setBranches([]);
+            setBranches(res.data);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchBranches = async () => {
-            setLoading(true);
-            try {
-                const res = await searchSpecialties(service);
-                setBranches([]);
-                setBranches(res.data);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchBranches();
     }, [service]);
+
+    const resetAll = () => {
+        setService('');
+        setBranches([]);
+        setEmployees([]);
+        setHours([]);
+
+        setSelectedBranch(null);
+        setSelectedEmployee(null);
+        setSelectedDate(null);
+        setSelectedHour(null);
+
+        setTimeout(() => {
+            fetchBranches();
+        }, 0);
+    };
+
 
     const handleSelectBranch = async (branch) => {
         setSelectedBranch(branch);
@@ -126,6 +145,7 @@ const ScheduleScreen = () => {
             });
             if (res) {
                 alert(`Confirmed appointment`);
+                resetAll();
             } else {
                 alert(`Error confirming appointment`);
             }
