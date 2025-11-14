@@ -30,44 +30,53 @@ const Business = () => {
     }
   };
 
-  const handleSaveBusiness = async (businessData)=>{
+  const handleSaveBusiness = async (businessData) => {
     try {
       if (businessData.id_business) {
         await updateBusiness(businessData.id_business, businessData);
         Alert.alert('Success', 'Business Updated!');
-      }else{
-        await createBusiness(businessData);
+      } else {
+        const res = await createBusiness(businessData);
+        console.log('res: ', res);
+        if (!res || !res.success) {
+          const errorMsg = res?.message || 'An unknown error occurred.';
+          Alert.alert('Error', errorMsg);
+          return;
+        }
         Alert.alert('Success', 'Business Created!');
       }
       fetchBusinesses();
     } catch (error) {
-
+      Alert.alert('Error', error.response?.data?.message || "Error to create business");
     }
+    
   };
 
-  const handleToggleBusinessStatus = async (business) =>{
+  const handleToggleBusinessStatus = async (business) => {
     const idBusiness = business.id_business;
-    const newStatus= business.state_business === 1 ? 0:1;
-    const action = newStatus === 1? 'enable':'disable';
+    const newStatus = business.state_business === 1 ? 0 : 1;
+    const action = newStatus === 1 ? 'enable' : 'disable';
 
 
     Alert.alert(
       `Confirm ${action}`,
       `Are you sure you want to ${action} "${business.name}"?`,
       [
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'Yes', onPress: async ()=>{
-          try {
-            if (business.state_business === 0) {
-              business.state_business = newStatus;
-              await updateBusiness(idBusiness, business);
-            } else {
-              await deleteBusiness(idBusiness);
-            }
-            Alert.alert('Success', `Business ${action}d!`);
-            fetchBusinesses();
-          }catch(error){}
-        }}
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Yes', onPress: async () => {
+            try {
+              if (business.state_business === 0) {
+                business.state_business = newStatus;
+                await updateBusiness(idBusiness, business);
+              } else {
+                await deleteBusiness(idBusiness);
+              }
+              Alert.alert('Success', `Business ${action}d!`);
+              fetchBusinesses();
+            } catch (error) { }
+          }
+        }
       ]
     );
   };
@@ -99,8 +108,8 @@ const Business = () => {
         <View style={{ marginLeft: 12, flex: 1 }}>
           {/* Badge Info */}
           <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 4 }}>{item.name}</Text>
-          <View style={[styles.statusBadge, {backgroundColor: item.state_business === 1 ? badgeEnable : badgeDisable}]}>
-            <Text style={{fontSize: 12, fontWeight: '600', color: item.state_business === 1 ? textBadgeE : textBadgeD}}>
+          <View style={[styles.statusBadge, { backgroundColor: item.state_business === 1 ? badgeEnable : badgeDisable }]}>
+            <Text style={{ fontSize: 12, fontWeight: '600', color: item.state_business === 1 ? textBadgeE : textBadgeD }}>
               {item.state_business === 1 ? 'Enabled' : 'Disabled'}
             </Text>
           </View>
@@ -162,7 +171,7 @@ const Business = () => {
       {/* Add or Edit modal */}
       <BusinessModal
         visible={modalVisible}
-        onClose={()=>setModalVisible(false)}
+        onClose={() => setModalVisible(false)}
         onSave={handleSaveBusiness}
         business={selectedBusiness}
       />
