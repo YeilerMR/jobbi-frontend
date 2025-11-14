@@ -99,7 +99,7 @@ const EmployeeScheduleScreen = () => {
       <View style={styles.priceRow}>
         <View style={styles.iconRow}>
           <DollarSign size={16} color="#333" />
-          <Text style={styles.priceText}>${item.price}</Text>
+          <Text style={styles.priceText}>{item.price}</Text>
         </View>
 
         <View style={styles.iconRow}>
