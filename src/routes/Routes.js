@@ -15,6 +15,7 @@ import ScheduleScreen from '../screens/Schedule/ScheduleScreen.js';
 import EmployeeScheduleScreen from '../screens/Schedule/EmployeeScheduleScreen.js';
 import ClientScheduleScreen from '../screens/Schedule/ClientScheduleScreen.js';
 import ScanReward from '../screens/Rewards/ScanReward.js';
+import Subscription from '../screens/subscription/Subscription.js';
 
 
 const screenOptions = {
@@ -114,7 +115,7 @@ const adminRoutes = [
     },
     {
         name: 'Subscriptions',
-        component: Welcome,//cambiar
+        component: Subscription,//cambiar
         options: { title: 'Subscriptions' },
         icon: (focused) => <Ionicons name='card' size={24} color={focused ? '#6200ee' : '#757575'} />,
     },
