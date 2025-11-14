@@ -14,11 +14,7 @@ import { getAllBranches } from '../../api/branches';
 import { searchSpecialties } from '../../api/services';
 import { getEmployeesByBranch } from '../../api/employees';
 import { Ionicons } from '@expo/vector-icons';
-
-const mockFetchHours = async (date) => {
-    await new Promise((r) => setTimeout(r, 500));
-    return ['08:00', '09:30', '11:00', '13:00', '15:00', '16:30'];
-};
+import { getSlots } from '../../api/schedule';
 
 const ScheduleScreen = () => {
     const [service, setService] = useState('');
@@ -74,8 +70,14 @@ const ScheduleScreen = () => {
         setSelectedDate(date.toISOString().split('T')[0]);
         setSelectedHour(null);
         setLoading(true);
-        const data = await mockFetchHours(date);
-        setHours(data);
+        const data = await getSlots(selectedEmployee?.id_employee, date.toISOString().split('T')[0]);
+
+        const onlyTimes = data.data.slots.map(slot => {
+            const dateObj = new Date(slot.start);
+            return dateObj.toTimeString().slice(0, 5); // HH:mm
+        });
+
+        setHours(onlyTimes);
         setLoading(false);
     };
 
